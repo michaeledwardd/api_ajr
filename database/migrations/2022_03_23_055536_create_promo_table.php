@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id('id_role');
-            $table->string('nama_role')->unique();
-            $table->string('peranan');
+        Schema::create('promo', function (Blueprint $table) {
+            $table->id('id_promo');
+            $table->string('kode_promo')->unique();
+            $table->string('jenis_promo');
+            $table->integer('jumlah_potongan');
+            $table->string('keterangan');
+            $table->string('status_promo');
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('promos');
     }
 };

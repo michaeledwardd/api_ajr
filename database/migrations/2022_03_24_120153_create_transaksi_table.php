@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transaksis', function (Blueprint $table) {
+        Schema::create('transaksi', function (Blueprint $table) {
             $table->string('id_transaksi')->primary();
             $table->string('id_customer')->index();
             $table->unsignedBigInteger('id_mobil')->index();
@@ -37,11 +37,11 @@ return new class extends Migration
             $table->integer('rating_perform_driver');
             $table->integer('rating_perform_ajr');
             $table->timestamps();
-            $table->foreign('id_customer')->references('id_customer')->on('customers');
-            $table->foreign('id_mobil')->references('id_mobil')->on('mobils');
-            $table->foreign('id_pegawai')->references('id_pegawai')->on('pegawais');
-            $table->foreign('id_driver')->references('id_driver')->on('drivers');
-            $table->foreign('id_promo')->references('id_promo')->on('promos');
+            $table->foreign('id_customer')->references('id_customer')->on('customer');
+            $table->foreign('id_mobil')->references('id_mobil')->on('mobil');
+            $table->foreign('id_pegawai')->references('id_pegawai')->on('pegawai');
+            $table->foreign('id_driver')->references('id_driver')->on('driver');
+            $table->foreign('id_promo')->references('id_promo')->on('promo');
         });
     }
 

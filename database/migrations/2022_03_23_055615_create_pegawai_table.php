@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pegawais', function (Blueprint $table) {
+        Schema::create('pegawai', function (Blueprint $table) {
             $table->id('id_pegawai');
             $table->unsignedBigInteger('id_role')->index();
             $table->string('nama_pegawai');
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->timestamps();
-            $table->foreign('id_role')->references('id_role')->on('roles');
+            $table->foreign('id_role')->references('id_role')->on('role');
         });
     }
 

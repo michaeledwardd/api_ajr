@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mobils', function (Blueprint $table) {
+        Schema::create('mobil', function (Blueprint $table) {
             $table->id('id_mobil');
             $table->unsignedBigInteger('id_mitra')->index();
             $table->string('nama_mobil');
@@ -34,7 +34,7 @@ return new class extends Migration
             $table->date('akhir_kontrak');
             $table->integer('nomor_stnk');
             $table->timestamps();
-            $table->foreign('id_mitra')->references('id_mitra')->on('mitras');
+            $table->foreign('id_mitra')->references('id_mitra')->on('mitra');
         });
     }
 

@@ -10,6 +10,7 @@ class Mitra extends Model
 {
     use HasFactory;
     public $primarykey = 'id_mitra';
+    protected $table = 'mitra';
     protected $fillable = [
         'nama_mitra',
         'alamat',

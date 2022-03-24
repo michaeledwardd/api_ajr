@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('promos', function (Blueprint $table) {
-            $table->id('id_promo');
-            $table->string('kode_promo')->unique();
-            $table->string('jenis_promo');
-            $table->integer('jumlah_potongan');
-            $table->string('keterangan');
-            $table->string('status_promo');
+        Schema::create('mitra', function (Blueprint $table) {
+            $table->id('id_mitra');
+            $table->string('nama_mitra');
+            $table->string('alamat');
+            $table->string('nomor_ktp');
+            $table->string('nomor_telepon');
+            $table->date('durasi_kontrak');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('promos');
+        Schema::dropIfExists('mitras');
     }
 };

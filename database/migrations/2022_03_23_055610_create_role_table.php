@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('jadwals', function (Blueprint $table) {
-            $table->id('id_jadwal');
-            $table->date('hari_kerja');
-            $table->integer('jenis_shift');
-            $table->time('jam_mulai');
-            $table->time('jam_selesai');
+        Schema::create('role', function (Blueprint $table) {
+            $table->id('id_role');
+            $table->string('nama_role')->unique();
+            $table->string('peranan');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jadwals');
+        Schema::dropIfExists('roles');
     }
 };
