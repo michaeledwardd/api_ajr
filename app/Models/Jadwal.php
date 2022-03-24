@@ -9,9 +9,12 @@ use Carbon\Carbon;
 class Jadwal extends Model
 {
     use HasFactory;
-
-    protected $guarded = [
-
+    public $primarykey = 'id_jadwal';
+    protected $fillable = [
+        'hari_kerja',
+        'jenis_shift',
+        'jam_mulai',
+        'jam_selesai'
     ];
 
     public function getCreatedAtAttribute(){

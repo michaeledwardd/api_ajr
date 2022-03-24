@@ -9,9 +9,13 @@ use Carbon\Carbon;
 class Mitra extends Model
 {
     use HasFactory;
-
-    protected $guarded = [
-
+    public $primarykey = 'id_mitra';
+    protected $fillable = [
+        'nama_mitra',
+        'alamat',
+        'nomor_ktp',
+        'nomor_telepon',
+        'durasi_kontrak'
     ];
 
     public function getCreatedAtAttribute(){

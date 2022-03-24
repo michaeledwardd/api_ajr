@@ -6,30 +6,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class Driver extends Model
+class Customer extends Model
 {
     use HasFactory;
     public $incrementing = false;
-    public $primarykey = 'id_driver';
+    public $primarykey = 'id_customer';
     protected $fillable = [
-        'id_driver',
-        'nama_driver', 
-        'jenis_kelamin',
-        'alamat',
-        'email_driver',
-        'password',
-        'foto_driver',
-        'status_tersedia',
-        'biaya_sewa_driver',
-        'no_telp',
+        'id_customer',
+        'nama_customer',
         'tgl_lahir',
-        'rerata_rating',
-        'mahir_inggris',
-        'upload_sim',
-        'upload_bebas_napza',
-        'upload_sehat_jiwa',
-        'upload_sehat_jasmani',
-        'upload_skck'
+        'jenis_kelamin',
+        'email_customer',
+        'no_telp',
+        'upload_berkas',
+        'status_berkas',
+        'nomor_kartupengenal',
+        'no_sim',
+        'asal_customer',
+        'password',
+        'usia_customer'
     ];
 
     public function getCreatedAtAttribute(){

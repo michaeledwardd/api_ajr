@@ -9,9 +9,13 @@ use Carbon\Carbon;
 class Promo extends Model
 {
     use HasFactory;
-
-    protected $guarded = [
-
+    public $primarykey = 'id_promo';
+    protected $fillable = [
+        'kode_promo',
+        'jenis_promo',
+        'jumlah_potongan',
+        'keterangan',
+        'status'
     ];
 
     public function getCreatedAtAttribute(){

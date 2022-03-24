@@ -9,9 +9,10 @@ use Carbon\Carbon;
 class Role extends Model
 {
     use HasFactory;
-
-    protected $guarded = [
-
+    public $primarykey = 'id_role';
+    protected $fillable = [
+        'nama_role',
+        'peranan'
     ];
 
     public function getCreatedAtAttribute(){

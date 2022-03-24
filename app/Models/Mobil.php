@@ -8,9 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class Mobil extends Model
 {
     use HasFactory;
-
-    protected $guarded = [
-
+    public $primarykey = 'id_mobil';
+    protected $fillable = [
+        'id_mitra',
+        'nama_mobil',
+        'jenis_transmisi',
+        'bahan_bakar',
+        'warna',
+        'volume_bagasi',
+        'fasilitas',
+        'kategori_aset',
+        'status_ketersediaan',
+        'plat_nomor',
+        'foto_mobil',
+        'tipe_mobil',
+        'kapasitas',
+        'biaya_sewa',
+        'last_service',
+        'awal_kontrak',
+        'akhir_kontrak',
+        'nomor_stnk'
     ];
 
     public function getCreatedAtAttribute(){

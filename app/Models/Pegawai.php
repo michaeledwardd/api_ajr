@@ -9,9 +9,16 @@ use Carbon\Carbon;
 class Pegawai extends Model
 {
     use HasFactory;
-
-    protected $guarded = [
-
+    public $primarykey = 'id_pegawai';
+    protected $fillable = [
+        'id_role',
+        'nama_pegawai',
+        'foto_pegawai',
+        'tgl_lahir',
+        'jenis_kelamin',
+        'alamat',
+        'email',
+        'password'
     ];
 
     public function getCreatedAtAttribute(){

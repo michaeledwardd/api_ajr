@@ -9,9 +9,11 @@ use Carbon\Carbon;
 class DetailShift extends Model
 {
     use HasFactory;
-
-    protected $guarded = [
-
+    public $primarykey = 'id_detail_shift';
+    protected $fillable = [
+        'id_pegawai', 
+        'id_jadwal',
+        'jumlah_pegawai'
     ];
 
     public function getCreatedAtAttribute(){
