@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('foto_driver');
             $table->string('status_tersedia');
+            $table->string('status_berkas');
             $table->double('biaya_sewa_driver');
             $table->string('no_telp');
             $table->date('tgl_lahir');

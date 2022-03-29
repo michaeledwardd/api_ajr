@@ -33,8 +33,8 @@ return new class extends Migration
             $table->string('bukti_bayar')->nullable();
             $table->double('subtotal_all');
             $table->string('status_transaksi');
-            $table->string('metode_bayar');
-            $table->integer('rating_perform_driver');
+            $table->string('metode_bayar')->nullable();
+            $table->integer('rating_perform_driver')->nullable();
             $table->integer('rating_perform_ajr');
             $table->timestamps();
             $table->foreign('id_customer')->references('id_customer')->on('customer');

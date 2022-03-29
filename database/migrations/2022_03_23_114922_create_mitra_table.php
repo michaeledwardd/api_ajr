@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('nomor_ktp');
             $table->string('nomor_telepon');
-            $table->date('durasi_kontrak');
             $table->timestamps();
         });
     }
