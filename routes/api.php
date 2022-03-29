@@ -39,6 +39,12 @@ Route::post('driver','Api\DriverController@store');
     Route::get('jadwal/{id_jadwal}', 'Api\JadwalController@show');
     Route::put('jadwal/{id_jadwal}', 'Api\JadwalController@update');
     Route::delete('jadwal/{id_jadwal}', 'Api\JadwalController@destroy');
+
+    Route::get('mitra', 'Api\MitraController@index');
+    Route::post('mitra', 'Api\MitraController@store');
+    Route::get('mitra/{id_mitra}', 'Api\MitraController@show');
+    Route::put('mitra/{id_mitra}', 'Api\MitraController@update');
+    Route::delete('mitra/{id_mitra}', 'Api\MitraController@destroy');
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
     

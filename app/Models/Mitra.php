@@ -15,8 +15,7 @@ class Mitra extends Model
         'nama_mitra',
         'alamat',
         'nomor_ktp',
-        'nomor_telepon',
-        'durasi_kontrak'
+        'nomor_telepon'
     ];
 
     public function getCreatedAtAttribute(){
