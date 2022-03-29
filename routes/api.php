@@ -21,6 +21,24 @@ Route::post('driver','Api\DriverController@store');
     Route::get('promo/{id_promo}', 'Api\PromoController@show');
     Route::put('promo/{id_promo}', 'Api\PromoController@update');
     Route::delete('promo/{id_promo}', 'Api\PromoController@destroy');
+
+    Route::get('role', 'Api\RoleController@index');
+    Route::post('role', 'Api\RoleController@store');
+    Route::get('role/{id_role}', 'Api\RoleController@show');
+    Route::put('role/{id_role}', 'Api\RoleController@update');
+    Route::delete('role/{id_role}', 'Api\RoleController@destroy');
+
+    Route::get('detailshift', 'Api\DetailShiftController@index');
+    Route::post('detailshift', 'Api\DetailShiftController@store');
+    Route::get('detailshift/{id_detail_shift}', 'Api\DetailShiftController@show');
+    Route::put('detailshift/{id_detail_shift}', 'Api\DetailShiftController@update');
+    Route::delete('detailshift/{id_detail_shift}', 'Api\DetailShiftController@destroy');
+
+    Route::get('jadwal', 'Api\JadwalController@index');
+    Route::post('jadwal', 'Api\JadwalController@store');
+    Route::get('jadwal/{id_jadwal}', 'Api\JadwalController@show');
+    Route::put('jadwal/{id_jadwal}', 'Api\JadwalController@update');
+    Route::delete('jadwal/{id_jadwal}', 'Api\JadwalController@destroy');
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
     

@@ -21,6 +21,7 @@ class Driver extends Model
         'password',
         'foto_driver',
         'status_tersedia',
+        'status_berkas',
         'biaya_sewa_driver',
         'no_telp',
         'tgl_lahir',
