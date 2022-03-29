@@ -13,8 +13,7 @@ class DetailShift extends Model
     protected $table = 'detail_shift';
     protected $fillable = [
         'id_pegawai', 
-        'id_jadwal',
-        'jumlah_pegawai'
+        'id_jadwal'
     ];
 
     public function getCreatedAtAttribute(){

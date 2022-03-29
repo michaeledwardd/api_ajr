@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('mobil', function (Blueprint $table) {
             $table->id('id_mobil');
-            $table->unsignedBigInteger('id_mitra')->index();
+            $table->unsignedBigInteger('id_mitra')->index()->nullable();
             $table->string('nama_mobil');
             $table->string('jenis_transmisi');
             $table->string('bahan_bakar');

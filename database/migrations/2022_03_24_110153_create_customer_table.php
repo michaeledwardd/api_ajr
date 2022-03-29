@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('upload_berkas');
             $table->string('status_berkas');
             $table->integer('nomor_kartupengenal');
-            $table->integer('no_sim');
+            $table->integer('no_sim')->nullable();
             $table->string('asal_customer');
             $table->string('password');
             $table->integer('usia_customer');

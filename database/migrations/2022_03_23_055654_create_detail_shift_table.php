@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id('id_detail_shift');
             $table->unsignedBigInteger('id_pegawai')->index();
             $table->unsignedBigInteger('id_jadwal')->index();
-            $table->integer('jumlah_pegawai');
             $table->timestamps();
             $table->foreign('id_pegawai')->references('id_pegawai')->on('pegawai');
             $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal');
