@@ -10,7 +10,7 @@ class Driver extends Model
 {
     use HasFactory;
     public $incrementing = false;
-    public $primarykey = 'id_driver';
+    protected $primaryKey = 'id_driver';
     protected $table = 'driver';
     protected $fillable = [
         'id_driver',

@@ -11,7 +11,7 @@ class Customer extends Model
     use HasFactory;
     public $incrementing = false;
     protected $table = 'customer';
-    public $primarykey = 'id_customer';
+    protected $primaryKey = 'id_customer';
     protected $fillable = [
         'id_customer',
         'nama_customer',

@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class Mitra extends Model
 {
     use HasFactory;
-    public $primarykey = 'id_mitra';
+    protected $primaryKey = 'id_mitra';
     protected $table = 'mitra';
     protected $fillable = [
         'nama_mitra',

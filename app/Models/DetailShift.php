@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class DetailShift extends Model
 {
     use HasFactory;
-    public $primarykey = 'id_detail_shift';
+    protected $primaryKey = 'id_detail_shift';
     protected $table = 'detail_shift';
     protected $fillable = [
         'id_pegawai', 

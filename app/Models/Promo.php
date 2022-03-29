@@ -9,14 +9,14 @@ use Carbon\Carbon;
 class Promo extends Model
 {
     use HasFactory;
-    public $primarykey = 'id_promo';
+    protected $primaryKey = 'id_promo';
     protected $table = 'promo';
     protected $fillable = [
         'kode_promo',
         'jenis_promo',
         'jumlah_potongan',
         'keterangan',
-        'status'
+        'status_promo'
     ];
 
     public function getCreatedAtAttribute(){
