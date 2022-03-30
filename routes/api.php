@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::post('driver','Api\DriverController@store');
-
     Route::get('promo', 'Api\PromoController@index');
     Route::post('promo', 'Api\PromoController@store');
     Route::get('promo/{id_promo}', 'Api\PromoController@show');
@@ -45,6 +42,37 @@ Route::post('driver','Api\DriverController@store');
     Route::get('mitra/{id_mitra}', 'Api\MitraController@show');
     Route::put('mitra/{id_mitra}', 'Api\MitraController@update');
     Route::delete('mitra/{id_mitra}', 'Api\MitraController@destroy');
+
+    Route::get('pegawai', 'Api\PegawaiController@index');
+    Route::post('pegawai', 'Api\PegawaiController@store');
+    Route::get('pegawai/{id_mitra}', 'Api\PegawaiController@show');
+    Route::put('pegawai/{id_mitra}', 'Api\PegawaiController@update');
+    Route::delete('pegawai/{id_mitra}', 'Api\PegawaiController@destroy');
+
+    Route::get('customer', 'Api\CustomerController@index');
+    Route::post('customer', 'Api\CustomerController@store');
+    Route::get('customer/{id_customer}', 'Api\CustomerController@show');
+    Route::put('customer/{id_customer}', 'Api\CustomerController@update');
+    Route::delete('customer/{id_customer}', 'Api\CustomerController@destroy');
+
+    Route::get('driver', 'Api\DriverController@index');
+    Route::post('driver', 'Api\DriverController@store');
+    Route::get('driver/{id_driver}', 'Api\DriverController@show');
+    Route::put('driver/{id_driver}', 'Api\DriverController@update');
+    Route::delete('driver/{id_driver}', 'Api\DriverController@destroy');
+
+    Route::get('mobil', 'Api\MobilController@index');
+    Route::post('mobil', 'Api\MobilController@store');
+    Route::get('mobil/{id_mobil}', 'Api\MobilController@show');
+    Route::put('mobil/{id_mobil}', 'Api\MobilController@update');
+    Route::delete('mobil/{id_mobil}', 'Api\MobilController@destroy');
+
+    Route::get('transaksi', 'Api\TransaksiController@index');
+    Route::post('transaksi', 'Api\TransaksiController@store');
+    Route::get('transaksi/{id_transaksi}', 'Api\TransaksiController@show');
+    Route::put('transaksi/{id_transaksi}', 'Api\TransaksiController@update');
+    Route::delete('transaksi/{id_transaksi}', 'Api\TransaksiController@destroy');
+    
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
     
