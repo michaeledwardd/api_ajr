@@ -45,6 +45,9 @@ class TransaksiController extends Controller
         ], 400); //Return message data Transaksi kosong
     }
 
+
+    
+
     //Method untuk menambah 1 data Transaksi baru (CREATE)
     public function store(Request $request){
         $storeData = $request->all(); //Mengambil semua input dari API Client
