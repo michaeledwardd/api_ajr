@@ -82,7 +82,7 @@ class TransaksiController extends Controller
 
         $Transaksi = Transaksi::create([
             'id_transaksi'=>'TRN'.$datenow.$id_generate,
-            '',
+            'id_mobil'=>$request->id_mobil,
             '',
         ]);
 
