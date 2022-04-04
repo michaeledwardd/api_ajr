@@ -55,7 +55,8 @@ class PegawaiController extends Controller
             'jenis_kelamin' => 'required|regex:/^[\pL\s\-]+$/u',
             'alamat' => 'required',
             'email' => 'required|unique:Pegawai|email:rfc,dns',
-            'password' => 'required'
+            'password' => 'required',
+            'is_aktif' => 'required'
         ]); //Membuat rule validasi input
 
         if($validate->fails()){
@@ -114,7 +115,8 @@ class PegawaiController extends Controller
             'jenis_kelamin' => 'required|regex:/^[\pL\s\-]+$/u',
             'alamat' => 'required',
             'email' => 'required|email:rfc,dns',
-            'password' => 'required'
+            'password' => 'required',
+            'is_aktif' => 'required'
         ]); //Membuat rule validasi input
 
         if($validate->fails()){
@@ -129,6 +131,7 @@ class PegawaiController extends Controller
         $Pegawai->alamat = $updateData['alamat'];
         $Pegawai->email = $updateData['email'];
         $Pegawai->password = $updateData['password'];
+        $Pegawai->is_aktif = $updateData['is_aktif'];
 
         if($Pegawai->save()){
             return response([

@@ -51,7 +51,8 @@ class MitraController extends Controller
             'nama_mitra' => 'required|regex:/^[\pL\s\-]+$/u',
             'alamat' => 'required',
             'nomor_ktp' => 'required|numeric|max:16',
-            'nomor_telepon' => 'required|numeric|digits_between:10,13|starts_with:08'
+            'nomor_telepon' => 'required|numeric|digits_between:10,13|starts_with:08',
+            'is_aktif' => 'required'
         ]); //Membuat rule validasi input
 
         if($validate->fails()){
@@ -106,7 +107,8 @@ class MitraController extends Controller
             'nama_mitra' => 'required|regex:/^[\pL\s\-]+$/u',
             'alamat' => 'required',
             'nomor_ktp' => 'required|numeric|max:16',
-            'nomor_telepon' => 'required|numeric|digits_between:10,13|starts_with:08'
+            'nomor_telepon' => 'required|numeric|digits_between:10,13|starts_with:08',
+            'is_aktif' => 'required'
         ]); //Membuat rule validasi input
 
         if($validate->fails()){
@@ -117,6 +119,7 @@ class MitraController extends Controller
         $Mitra->alamat = $updateData['alamat']; 
         $Mitra->nomor_ktp = $updateData['nomor_ktp']; 
         $Mitra->nomor_telepon = $updateData['nomor_telepon']; 
+        $Mitra->is_aktif = $updateData['is_aktif'];
 
         if($Mitra->save()){
             return response([

@@ -71,7 +71,7 @@ class CustomerController extends Controller
 
         $count = DB::table('customer')->count() +1;
         $id_generate = sprintf("%03d", $count);
-        $datenow = Carbon::now()->format('dmy');
+        $datenow = Carbon::now()->format('ymd');
 
         $Customer = Customer::create([
             'id_customer'=>'CUS'.$datenow.'-'.$id_generate,

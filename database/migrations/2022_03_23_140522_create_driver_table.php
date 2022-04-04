@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('foto_driver');
             $table->string('status_tersedia');
             $table->string('status_berkas');
+            $table->boolean('is_aktif');
             $table->double('biaya_sewa_driver');
             $table->string('no_telp');
             $table->date('tgl_lahir');
@@ -33,6 +34,7 @@ return new class extends Migration
             $table->string('upload_sehat_jiwa');
             $table->string('upload_sehat_jasmani');
             $table->string('upload_skck');
+            
             $table->timestamps();
         });
     }

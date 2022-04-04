@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('is_aktif');
             $table->timestamps();
             $table->foreign('id_role')->references('id_role')->on('role');
         });

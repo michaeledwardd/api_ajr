@@ -56,6 +56,7 @@ class DriverController extends Controller
             'foto_driver' => 'required',
             'status_tersedia' => 'required|regex:/^[\pL\s\-]+$/u',
             'status_berkas' => 'required|regex:/^[\pL\s\-]+$/u',
+            'is_aktif' => 'required',
             'biaya_sewa_driver' => 'required|numeric',
             'no_telp' => 'required|numeric',
             'tgl_lahir' => 'required|date_format:Y-m-d',
@@ -85,6 +86,7 @@ class DriverController extends Controller
             'foto_driver'=>$request->foto_driver,
             'status_tersedia'=>$request->status_tersedia,
             'status_berkas'=>$request->status_berkas,
+            'is_aktif'=>$request->is_aktif,
             'biaya_sewa_driver'=>$request->biaya_sewa_driver,
             'no_telp'=>$request->no_telp,
             'tgl_lahir'=>$request->tgl_lahir,
@@ -147,6 +149,7 @@ class DriverController extends Controller
             'foto_driver' => 'required',
             'status_tersedia' => 'required|regex:/^[\pL\s\-]+$/u',
             'status_berkas' => 'required|regex:/^[\pL\s\-]+$/u',
+            'is_aktif' => 'required',
             'biaya_sewa_driver' => 'required|numeric',
             'no_telp' => 'required|numeric',
             'tgl_lahir' => 'required|date_format:Y-m-d',
@@ -172,6 +175,7 @@ class DriverController extends Controller
         $Driver->foto_driver = $updateData['foto_driver'];
         $Driver->status_tersedia = $updateData['status_tersedia'];
         $Driver->status_berkas = $updateData['status_berkas'];
+        $Driver->is_aktif = $updateData['is_aktif'];
         $Driver->biaya_sewa_driver = $updateData['biaya_sewa_driver'];
         $Driver->no_telp = $updateData['no_telp'];
         $Driver->tgl_lahir = $updateData['tgl_lahir'];

@@ -19,7 +19,8 @@ class Pegawai extends Model
         'jenis_kelamin',
         'alamat',
         'email',
-        'password'
+        'password',
+        'is_aktif'
     ];
 
     public function getCreatedAtAttribute(){

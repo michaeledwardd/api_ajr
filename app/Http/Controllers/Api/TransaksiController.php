@@ -185,10 +185,27 @@ class TransaksiController extends Controller
             return response(['message' => $validate->errors()], 400); //Return error invalid input
         }
 
-        $Transaksi->hari_kerja = $updateData['hari_kerja']; 
-        $Transaksi->jenis_shift = $updateData['jenis_shift']; 
-        $Transaksi->jam_mulai = $updateData['jam_mulai']; 
-        $Transaksi->jam_selesai = $updateData['jam_selesai']; 
+        $Transaksi->id_customer = $updateData['id_customer']; 
+        $Transaksi->id_mobil = $updateData['id_mobil']; 
+        $Transaksi->id_pegawai = $updateData['id_pegawai']; 
+        $Transaksi->id_driver = $updateData['id_driver'];
+        $Transaksi->id_promo = $updateData['id_promo']; 
+        $Transaksi->tgl_transaksi = $updateData['tgl_transaksi']; 
+        $Transaksi->tgl_pinjam = $updateData['tgl_pinjam']; 
+        $Transaksi->tgl_kembali = $updateData['tgl_kembali'];
+        $Transaksi->tgl_selesai_pinjam = $updateData['tgl_selesai_pinjam']; 
+        $Transaksi->jenis_peminjaman = $updateData['jenis_peminjaman']; 
+        $Transaksi->cek_terlambat = $updateData['cek_terlambat']; 
+        $Transaksi->total_denda = $updateData['total_denda'];
+        $Transaksi->total_biaya_pinjam = $updateData['total_biaya_pinjam']; 
+        $Transaksi->biaya_denda = $updateData['biaya_denda']; 
+        $Transaksi->total_sewa_driver = $updateData['total_sewa_driver']; 
+        $Transaksi->bukti_bayar = $updateData['bukti_bayar'];
+        $Transaksi->subtotal_all = $updateData['subtotal_all']; 
+        $Transaksi->status_transaksi = $updateData['status_transaksi']; 
+        $Transaksi->metode_bayar = $updateData['metode_bayar']; 
+        $Transaksi->rating_perform_driver = $updateData['rating_perform_driver']; 
+        $Transaksi->rating_perform_ajr = $updateData['rating_perform_ajr']; 
 
         if($Transaksi->save()){
             return response([

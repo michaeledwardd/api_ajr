@@ -22,6 +22,7 @@ class Driver extends Model
         'foto_driver',
         'status_tersedia',
         'status_berkas',
+        'is_aktif',
         'biaya_sewa_driver',
         'no_telp',
         'tgl_lahir',
