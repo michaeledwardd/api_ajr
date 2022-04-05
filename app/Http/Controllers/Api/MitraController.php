@@ -27,6 +27,22 @@ class MitraController extends Controller
         ], 400); //Return message data Mitra kosong
     }
 
+    public function showbyStatus(){
+        $mitras = Mitra::where('is_aktif',1)->get(); //Mengambil semua data Mitra
+
+        if(count($mitras) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $mitras
+            ], 200);
+        } //Return data semua Mitra dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Mitra kosong
+    }
+
     //Method untuk menampilkan 1 data Mitra (SEARCH)
     public function show($id_mitra){
         $mitras = Mitra::find($id_mitra); //Mencari data Mitra berdasarkan id

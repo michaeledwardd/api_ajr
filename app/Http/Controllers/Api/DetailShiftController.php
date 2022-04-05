@@ -7,12 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Valid_detail_shiftation\Rule;
 use Valid_detail_shiftator;
 use App\Models\DetailShift;
+use Illuminate\Support\Facades\DB;
 
 class DetailShiftController extends Controller
 {
     //Method untuk menampilkan semua data detail shift (READ)
     public function index(){
-        $detailshifts = DetailShift::with(['Pegawai', 'Jadwal'])->get(); //Mengambil semua data detail shift
+        $detailshifts = DB::table('detail_shift')
+        ->join('jadwal', 'jadwal.id_jadwal', '=', 'detail_shift.id_jadwal')
+        ->join('pegawai', 'pegawai.id_pegawai', '=', 'detail_shift.id_pegawai')
+        ->select('hari_kerja','jenis_shift','nama_pegawai')
+        ->orderBy('hari_kerja','desc')->orderBy('jenis_shift','asc')
+        ->get(); //Mengambil semua data detail shift
 
         if(count($detailshifts) > 0){
             return response([
@@ -48,8 +54,9 @@ class DetailShiftController extends Controller
     public function store(Request $request){
         $storeData = $request->all(); //Mengambil semua input dari API Client
         $valid_detail_shiftate = Valid_detail_shiftator::make($storeData, [
-            'id_detail_shift_pegawai' => 'required|numeric',
-            'id_detail_shift_jadwal' => 'required|numeric'
+            'id_detail_shift' => 'required|numeric',
+            'id_jadwal' => 'required|numeric',
+            'id_pegawai' => 'required|numeric'
         ]); //Membuat rule valid_detail_shiftasi input
 
         if($valid_detail_shiftate->fails()){

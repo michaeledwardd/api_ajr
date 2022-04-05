@@ -27,6 +27,22 @@ class PromoController extends Controller
         ], 400); //Return message data promo kosong
     }
 
+    public function showbyStatus(){
+        $promo = Promo::where('status_promo','aktif')->get(); //Mengambil semua data promo
+
+        if(count($promo) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $promo
+            ], 200);
+        } //Return data semua promo dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data promo kosong
+    }
+
     //Method untuk menampilkan 1 data promo (SEARCH)
     public function show($id_promo){
         $promo = Promo::find($id_promo); //Mencari data promo berdasarkan id

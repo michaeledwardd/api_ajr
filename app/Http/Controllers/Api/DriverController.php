@@ -29,6 +29,22 @@ class DriverController extends Controller
         ], 400); //Return message data Driver kosong
     }
 
+    public function showbyStatus(){
+        $drivers = Driver::where('is_aktif',1)->get(); //Mengambil semua data Driver
+
+        if(count($drivers) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $drivers
+            ], 200);
+        } //Return data semua Driver dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Driver kosong
+    }
+
     public function show($id_driver){
         $drivers = Driver::find($id_driver); //Mencari data Driver berdasarkan id
 
@@ -181,7 +197,7 @@ class DriverController extends Controller
         $Driver->tgl_lahir = $updateData['tgl_lahir'];
         $Driver->rerata_rating = $updateData['rerata_rating'];
         $Driver->mahir_inggris = $updateData['mahir_inggris'];
-        $Driver->upload_sim = $updateData['mahir_inggris'];
+        $Driver->upload_sim = $updateData['is_aktif'];
         $Driver->upload_bebas_napza = $updateData['upload_bebas_napza'];
         $Driver->upload_sehat_jiwa = $updateData['upload_sehat_jiwa'];
         $Driver->upload_sehat_jasmani = $updateData['upload_sehat_jasmani'];

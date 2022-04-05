@@ -27,6 +27,23 @@ class PegawaiController extends Controller
         ], 400); //Return message data Pegawai kosong
     }
 
+    public function showbyStatus()
+    {
+        $pegawais = Pegawai::where('is_aktif',1)->get(); //Mengambil semua data Pegawai
+
+        if(count($pegawais) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $pegawais
+            ], 200);
+        } //Return data semua Pegawai dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Pegawai kosong
+    }
+
     //Method untuk menampilkan 1 data Pegawai (SEARCH)
     public function show($id_pegawai){
         $pegawais = Pegawai::find($id_pegawai); //Mencari data Pegawai berdasarkan id

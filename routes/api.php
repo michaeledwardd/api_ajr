@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
     Route::get('promo', 'Api\PromoController@index');
+    Route::get('promobystatus', 'Api\PromoController@showbyStatus');
     Route::post('promo', 'Api\PromoController@store');
     Route::get('promo/{id_promo}', 'Api\PromoController@show');
     Route::put('promo/{id_promo}', 'Api\PromoController@update');
@@ -38,12 +39,14 @@ use Illuminate\Support\Facades\Route;
     Route::delete('jadwal/{id_jadwal}', 'Api\JadwalController@destroy');
 
     Route::get('mitra', 'Api\MitraController@index');
+    Route::get('mitrabystatus', 'Api\MitraController@showbyStatus');
     Route::post('mitra', 'Api\MitraController@store');
     Route::get('mitra/{id_mitra}', 'Api\MitraController@show');
     Route::put('mitra/{id_mitra}', 'Api\MitraController@update');
     Route::delete('mitra/{id_mitra}', 'Api\MitraController@destroy');
 
     Route::get('pegawai', 'Api\PegawaiController@index');
+    Route::get('pegawaibystatus', 'Api\PegawaiController@showbyStatus');
     Route::post('pegawai', 'Api\PegawaiController@store');
     Route::get('pegawai/{id_mitra}', 'Api\PegawaiController@show');
     Route::put('pegawai/{id_mitra}', 'Api\PegawaiController@update');
@@ -56,6 +59,7 @@ use Illuminate\Support\Facades\Route;
     Route::delete('customer/{id_customer}', 'Api\CustomerController@destroy');
 
     Route::get('driver', 'Api\DriverController@index');
+    Route::get('driverbystatus', 'Api\DriverController@showbyStatus');
     Route::post('driver', 'Api\DriverController@store');
     Route::get('driver/{id_driver}', 'Api\DriverController@show');
     Route::put('driver/{id_driver}', 'Api\DriverController@update');
