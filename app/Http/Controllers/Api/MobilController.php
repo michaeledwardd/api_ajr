@@ -13,6 +13,23 @@ class MobilController extends Controller
 {
     //Method untuk menampilkan semua data product (READ)
     public function index(){
+        $mobils = Mobil::all(); //Mengambil semua data Mobil
+
+        if(count($mobils) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $mobils
+            ], 200);
+        } //Return data semua Mobil dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Mobil kosong
+    }
+
+
+    public function showWithMitra(){
         $mobils = DB::table('mobil')
         ->join('mitra','mobil.id_mitra','=','mitra.id_mitra')
         ->select('mobil.*','nama_mitra','nomor_telepon')
@@ -73,10 +90,10 @@ class MobilController extends Controller
             'jenis_transmisi' => 'required|regex:/^[\pL\s\-]+$/u',
             'bahan_bakar' => 'required|regex:/^[\pL\s\-]+$/u',
             'warna' => 'required|regex:/^[\pL\s\-]+$/u',
-            'volume_bagasi' => 'requied|numeric',
-            'fasilitas' => 'required|regex:/^[\pL\s\-]+$/u',
-            'kategori_aset' => 'required|regex:/^[\pL\s\-]+$/u',
-            'status_ketersediaan' => 'required|regex:/^[\pL\s\-]+$/u',
+            'volume_bagasi' => 'required|numeric',
+            'fasilitas' => 'required',
+            'kategori_aset' => 'regex:/^[\pL\s\-]+$/u',
+            'status_ketersediaan' => 'regex:/^[\pL\s\-]+$/u',
             'plat_nomor' => 'required|unique:Mobil',
             'foto_mobil' => 'required',
             'tipe_mobil' => 'required',
@@ -92,16 +109,35 @@ class MobilController extends Controller
             return response(['message' => $validate->errors()], 400); //Return error invalid input
         }
 
-        if($request->id_mitra == null){
-            $request->status_ketersediaan = sprintf("tidak tersedia");
+        if(($request->id_mitra)===NULL){
             $request->kategori_aset = sprintf("Perusahaan");
+            $request->status_ketersediaan = sprintf("tidak tersedia");
         }
         else{
-            $request->status_ketersediaan = sprintf("tersedia");
             $request->kategori_aset = sprintf("Mitra");
+            $request->status_ketersediaan = sprintf("tersedia");
         }
 
-        $Mobil = Mobil::create($storeData);
+        $Mobil = Mobil::create([
+            'id_mitra'=>$request->id_mitra,
+            'nama_mobil'=>$request->nama_mobil,
+            'jenis_transmisi'=>$request->jenis_transmisi,
+            'bahan_bakar'=>$request->bahan_bakar,
+            'warna'=>$request->warna,
+            'volume_bagasi'=>$request->volume_bagasi,
+            'fasilitas'=>$request->fasilitas,
+            'kategori_aset'=>$request->kategori_aset,
+            'status_ketersediaan'=>$request->status_ketersediaan,
+            'plat_nomor'=>$request->plat_nomor,
+            'foto_mobil'=>$request->foto_mobil,
+            'tipe_mobil'=>$request->tipe_mobil,
+            'kapasitas'=>$request->kapasitas,
+            'biaya_sewa'=>$request->biaya_sewa,
+            'last_service'=>$request->last_service,
+            'awal_kontrak'=>$request->awal_kontrak,
+            'akhir_kontrak'=>$request->akhir_kontrak,
+            'nomor_stnk'=>$request->nomor_stnk
+        ]);
 
         return response([
             'message' => 'Add Mobil Success',

@@ -87,6 +87,13 @@ class TransaksiController extends Controller
         $id_generate = sprintf("%03d", $count);
         $datenow = Carbon::now()->format('dmy');
 
+        if(($request->bukti_bayar)=== null){
+            $request->metode_bayar = sprintf("cash");
+        }
+        else{
+            $request->metode_bayar = sprintf("transfer");
+        }
+
         if(($request->id_driver)===NULL)
         {
             $kode_pinjam = sprintf("02");

@@ -16,7 +16,8 @@ class DetailShiftController extends Controller
         $detailshifts = DB::table('detail_shift')
         ->join('jadwal', 'jadwal.id_jadwal', '=', 'detail_shift.id_jadwal')
         ->join('pegawai', 'pegawai.id_pegawai', '=', 'detail_shift.id_pegawai')
-        ->select('hari_kerja','jenis_shift','nama_pegawai')
+        ->join('role','role.id_role','=','pegawai.id_role')
+        ->select('hari_kerja','jenis_shift','nama_pegawai','nama_role')
         ->orderBy('hari_kerja','desc')->orderBy('jenis_shift','asc')
         ->get(); //Mengambil semua data detail shift
 

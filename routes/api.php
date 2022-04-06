@@ -67,6 +67,7 @@ use Illuminate\Support\Facades\Route;
     Route::delete('driver/{id_driver}', 'Api\DriverController@destroy');
 
     Route::get('mobil', 'Api\MobilController@index');
+    Route::get('mobilmitra', 'Api\MobilController@showWithMitra');
     Route::get('mobilbystatus', 'Api\MobilController@showbyStatus');
     Route::post('mobil', 'Api\MobilController@store');
     Route::get('mobil/{id_mobil}', 'Api\MobilController@show');
