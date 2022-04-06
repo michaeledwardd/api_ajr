@@ -7,12 +7,32 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Validator;
 use App\Models\Mobil;
+use Illuminate\Support\Facades\DB;
 
 class MobilController extends Controller
 {
     //Method untuk menampilkan semua data product (READ)
     public function index(){
-        $mobils = Mobil::with(['Mitra'])->get(); //Mengambil semua data Mobil
+        $mobils = DB::table('mobil')
+        ->join('mitra','mobil.id_mitra','=','mitra.id_mitra')
+        ->select('mobil.*','nama_mitra','nomor_telepon')
+        ->get(); //Mengambil semua data Mobil
+
+        if(count($mobils) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $mobils
+            ], 200);
+        } //Return data semua Mobil dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Mobil kosong
+    }
+
+    public function showbyStatus(){
+        $mobils = Mobil::where('status_ketersediaan','tersedia')->get(); //Mengambil semua data Mobil
 
         if(count($mobils) > 0){
             return response([
@@ -70,6 +90,15 @@ class MobilController extends Controller
 
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input
+        }
+
+        if($request->id_mitra == null){
+            $request->status_ketersediaan = sprintf("tidak tersedia");
+            $request->kategori_aset = sprintf("Perusahaan");
+        }
+        else{
+            $request->status_ketersediaan = sprintf("tersedia");
+            $request->kategori_aset = sprintf("Mitra");
         }
 
         $Mobil = Mobil::create($storeData);

@@ -59,13 +59,15 @@ use Illuminate\Support\Facades\Route;
     Route::delete('customer/{id_customer}', 'Api\CustomerController@destroy');
 
     Route::get('driver', 'Api\DriverController@index');
-    Route::get('driverbystatus', 'Api\DriverController@showbyStatus');
+    Route::get('driverstatusaktif', 'Api\DriverController@showstatusAktif');
+    Route::get('driverstatustersedia', 'Api\DriverController@showstatusTersedia');
     Route::post('driver', 'Api\DriverController@store');
     Route::get('driver/{id_driver}', 'Api\DriverController@show');
     Route::put('driver/{id_driver}', 'Api\DriverController@update');
     Route::delete('driver/{id_driver}', 'Api\DriverController@destroy');
 
     Route::get('mobil', 'Api\MobilController@index');
+    Route::get('mobilbystatus', 'Api\MobilController@showbyStatus');
     Route::post('mobil', 'Api\MobilController@store');
     Route::get('mobil/{id_mobil}', 'Api\MobilController@show');
     Route::put('mobil/{id_mobil}', 'Api\MobilController@update');

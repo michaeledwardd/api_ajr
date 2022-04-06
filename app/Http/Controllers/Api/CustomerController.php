@@ -57,7 +57,7 @@ class CustomerController extends Controller
             'email_customer' => 'required|unique:Customer|email:rfc,dns',
             'no_telp' => 'required',
             'upload_berkas' => 'required',
-            'status_berkas' => 'required',
+            'status_berkas',
             'nomor_kartupengenal' => 'required|numeric',
             'no_sim' => 'numeric',
             'asal_customer' => 'required',
@@ -72,6 +72,12 @@ class CustomerController extends Controller
         $count = DB::table('customer')->count() +1;
         $id_generate = sprintf("%03d", $count);
         $datenow = Carbon::now()->format('ymd');
+        if($request->upload_berkas == null){
+            $request->status_berkas = sprintf("not-verified");
+        }
+        else{
+            $request->status_berkas = sprintf("verified");
+        }
 
         $Customer = Customer::create([
             'id_customer'=>'CUS'.$datenow.'-'.$id_generate,

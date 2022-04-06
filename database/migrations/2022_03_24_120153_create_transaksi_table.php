@@ -20,10 +20,10 @@ return new class extends Migration
             $table->unsignedBigInteger('id_pegawai')->index();
             $table->string('id_driver')->index()->nullable();
             $table->unsignedBigInteger('id_promo')->index()->nullable();
-            $table->date('tgl_transaksi');
-            $table->date('tgl_pinjam');
-            $table->date('tgl_kembali');
-            $table->date('tgl_selesai_pinjam')->nullable();
+            $table->dateTime('tgl_transaksi');
+            $table->dateTime('tgl_pinjam');
+            $table->dateTime('tgl_kembali');
+            $table->dateTime('tgl_selesai_pinjam')->nullable();
             $table->string('jenis_peminjaman');
             $table->boolean('cek_terlambat');
             $table->double('total_denda');

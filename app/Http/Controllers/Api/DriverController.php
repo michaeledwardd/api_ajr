@@ -29,8 +29,28 @@ class DriverController extends Controller
         ], 400); //Return message data Driver kosong
     }
 
-    public function showbyStatus(){
+    public function showstatusAktif(){
         $drivers = Driver::where('is_aktif',1)->get(); //Mengambil semua data Driver
+
+        if(count($drivers) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $drivers
+            ], 200);
+        } //Return data semua Driver dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Driver kosong
+    }
+
+    public function showstatusTersedia(){
+        $drivers = DB::table('driver')
+        ->select('nama_driver','jenis_kelamin','no_telp','biaya_sewa_driver','status_tersedia')
+        ->where('status_tersedia','tersedia')
+        ->get();
+        // $drivers = Driver::where('status_tersedia','tersedia')->get(); //Mengambil semua data Driver
 
         if(count($drivers) > 0){
             return response([

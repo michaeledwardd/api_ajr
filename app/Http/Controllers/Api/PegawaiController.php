@@ -7,12 +7,16 @@ use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Pegawai;
+use Illuminate\Support\Facades\DB;
 
 class PegawaiController extends Controller
 {
     ///Method untuk menampilkan semua data product (READ)
     public function index(){
-        $pegawais = Pegawai::with(['Role'])->get(); //Mengambil semua data Pegawai
+        $pegawais = DB::table('pegawai')
+        ->join('role','pegawai.id_role','=','role.id_role')
+        ->select('pegawai.*','nama_role')
+        ->get(); //Mengambil semua data Pegawai
 
         if(count($pegawais) > 0){
             return response([

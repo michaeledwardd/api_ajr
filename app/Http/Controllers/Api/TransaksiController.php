@@ -13,7 +13,14 @@ class TransaksiController extends Controller
 {
     //Method untuk menampilkan semua data product (READ)
     public function index(){
-        $transaksis = Transaksi::with(['Mobil', 'Driver', 'Customer', 'Pegawai', 'Promo'])->orderBy('created_at','asc')->get(); //Mengambil semua data Transaksi
+        $transaksis = DB::table('transaksi')
+        ->join('promo','transaksi.id_promo','=','promo.id_promo')
+        ->join('driver','transaksi.id_driver','=','driver.id_driver')
+        ->join('customer','transaksi.id_customer','=','customer.id_customer')
+        ->join('pegawai','transaksi.id_pegawai','=','pegawai.id_pegawai')
+        ->join('mobil','transaksi.id_mobil','=','mobil.id_mobil')
+        ->select('transaksi.*','jenis_promo','jumlah_potongan','nama_driver','biaya_sewa_driver','nama_customer','nama_pegawai','nama_mobil')
+        ->get(); //Mengambil semua data Transaksi
 
         if(count($transaksis) > 0){
             return response([
