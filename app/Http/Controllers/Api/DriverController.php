@@ -195,7 +195,7 @@ class DriverController extends Controller
             'upload_bebas_napza' => 'required',
             'upload_sehat_jiwa' => 'required',
             'upload_sehat_jasmani' => 'required',
-            'upload_skck' => 'nullable'
+            'upload_skck' => 'required'
             
         ]); //Membuat rule validasi input
 

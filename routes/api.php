@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+    Route::post('login', 'App\\Http\\Controllers\Api\AuthController@login');
+
     Route::get('promo', 'Api\PromoController@index');
     Route::get('promobystatus', 'Api\PromoController@showbyStatus');
     Route::post('promo', 'Api\PromoController@store');
@@ -55,7 +57,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('customer', 'Api\CustomerController@index');
     Route::post('customer', 'Api\CustomerController@store');
     Route::get('customer/{id_customer}', 'Api\CustomerController@show');
-    Route::put('customer/{id_customer}', 'Api\CustomerController@update');
+    Route::post('customer/{id_customer}', 'Api\CustomerController@update');
     Route::delete('customer/{id_customer}', 'Api\CustomerController@destroy');
 
     Route::get('driver', 'Api\DriverController@index');
@@ -80,6 +82,7 @@ use Illuminate\Support\Facades\Route;
     Route::put('transaksi/{id_transaksi}', 'Api\TransaksiController@update');
     Route::delete('transaksi/{id_transaksi}', 'Api\TransaksiController@destroy');
     
+
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
     
