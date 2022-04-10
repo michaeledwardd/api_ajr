@@ -14,7 +14,7 @@ class DriverController extends Controller
 {
     //Method untuk menampilkan semua data product (READ)
     public function index(){
-        $drivers = Driver::all(); //Mengambil semua data Driver
+        $drivers = Driver::orderBy('created_at','asc')->get(); //Mengambil semua data Driver
 
         if(count($drivers) > 0){
             return response([
@@ -96,7 +96,7 @@ class DriverController extends Controller
             'biaya_sewa_driver' => 'required|numeric',
             'no_telp' => 'required|numeric',
             'tgl_lahir' => 'required|date_format:Y-m-d',
-            'rerata_rating' => 'required|numeric',
+            'rerata_rating' => 'numeric',
             'mahir_inggris' => 'required',
             'upload_sim' => 'required',
             'upload_bebas_napza' => 'required',
@@ -189,13 +189,13 @@ class DriverController extends Controller
             'biaya_sewa_driver' => 'required|numeric',
             'no_telp' => 'required|numeric',
             'tgl_lahir' => 'required|date_format:Y-m-d',
-            'rerata_rating' => 'required|numeric',
+            // 'rerata_rating',
             'mahir_inggris' => 'required',
             'upload_sim' => 'required',
             'upload_bebas_napza' => 'required',
             'upload_sehat_jiwa' => 'required',
             'upload_sehat_jasmani' => 'required',
-            'upload_skck' => 'required'
+            'upload_skck' => 'nullable'
             
         ]); //Membuat rule validasi input
 
@@ -215,7 +215,7 @@ class DriverController extends Controller
         $Driver->biaya_sewa_driver = $updateData['biaya_sewa_driver'];
         $Driver->no_telp = $updateData['no_telp'];
         $Driver->tgl_lahir = $updateData['tgl_lahir'];
-        $Driver->rerata_rating = $updateData['rerata_rating'];
+        // $Driver->rerata_rating = $updateData['rerata_rating'];
         $Driver->mahir_inggris = $updateData['mahir_inggris'];
         $Driver->upload_sim = $updateData['is_aktif'];
         $Driver->upload_bebas_napza = $updateData['upload_bebas_napza'];

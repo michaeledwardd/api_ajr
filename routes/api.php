@@ -48,9 +48,9 @@ use Illuminate\Support\Facades\Route;
     Route::get('pegawai', 'Api\PegawaiController@index');
     Route::get('pegawaibystatus', 'Api\PegawaiController@showbyStatus');
     Route::post('pegawai', 'Api\PegawaiController@store');
-    Route::get('pegawai/{id_mitra}', 'Api\PegawaiController@show');
-    Route::put('pegawai/{id_mitra}', 'Api\PegawaiController@update');
-    Route::delete('pegawai/{id_mitra}', 'Api\PegawaiController@destroy');
+    Route::get('pegawai/{id_pegawai}', 'Api\PegawaiController@show');
+    Route::put('pegawai/{id_pegawai}', 'Api\PegawaiController@update');
+    Route::delete('pegawai/{id_pegawai}', 'Api\PegawaiController@destroy');
 
     Route::get('customer', 'Api\CustomerController@index');
     Route::post('customer', 'Api\CustomerController@store');

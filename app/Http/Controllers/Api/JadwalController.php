@@ -105,8 +105,8 @@ class JadwalController extends Controller
         $validate = Validator::make($updateData, [
             'hari_kerja' => 'required|regex:/^[\pL\s\-]+$/u',
             'jenis_shift' => 'required|numeric',
-            'jam_mulai' => 'required|date_format:H:i',
-            'jam_selesai' => 'required|date_format:H:i|after:jam_mulai'
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required|after:jam_mulai'
         ]); //Membuat rule validasi input
 
         if($validate->fails()){

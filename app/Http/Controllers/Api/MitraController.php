@@ -66,7 +66,7 @@ class MitraController extends Controller
         $validate = Validator::make($storeData, [
             'nama_mitra' => 'required|regex:/^[\pL\s\-]+$/u',
             'alamat' => 'required',
-            'nomor_ktp' => 'required|numeric|max:16',
+            'nomor_ktp' => 'required|numeric',
             'nomor_telepon' => 'required|numeric|digits_between:10,13|starts_with:08',
             'is_aktif' => 'required'
         ]); //Membuat rule validasi input
@@ -122,7 +122,7 @@ class MitraController extends Controller
         $validate = Validator::make($updateData, [
             'nama_mitra' => 'required|regex:/^[\pL\s\-]+$/u',
             'alamat' => 'required',
-            'nomor_ktp' => 'required|numeric|max:16',
+            'nomor_ktp' => 'required|numeric',
             'nomor_telepon' => 'required|numeric|digits_between:10,13|starts_with:08',
             'is_aktif' => 'required'
         ]); //Membuat rule validasi input

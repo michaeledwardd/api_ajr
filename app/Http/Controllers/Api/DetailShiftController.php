@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Valid_detail_shiftation\Rule;
-use Valid_detail_shiftator;
+use Validator;
 use App\Models\DetailShift;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +17,7 @@ class DetailShiftController extends Controller
         ->join('jadwal', 'jadwal.id_jadwal', '=', 'detail_shift.id_jadwal')
         ->join('pegawai', 'pegawai.id_pegawai', '=', 'detail_shift.id_pegawai')
         ->join('role','role.id_role','=','pegawai.id_role')
-        ->select('hari_kerja','jenis_shift','nama_pegawai','nama_role')
+        ->select('id_detail_shift','pegawai.id_pegawai','jadwal.id_jadwal','hari_kerja','jenis_shift','nama_pegawai','nama_role')
         ->orderBy('hari_kerja','desc')->orderBy('jenis_shift','asc')
         ->get(); //Mengambil semua data detail shift
 
@@ -51,26 +51,25 @@ class DetailShiftController extends Controller
         ], 400); //Return message data detail shift kosong
     }
 
-    //Method untuk menambah 1 data detail shift baru (CREATE)
     public function store(Request $request){
         $storeData = $request->all(); //Mengambil semua input dari API Client
-        $valid_detail_shiftate = Valid_detail_shiftator::make($storeData, [
-            'id_detail_shift' => 'required|numeric',
+        $validate = Validator::make($storeData, [
             'id_jadwal' => 'required|numeric',
             'id_pegawai' => 'required|numeric'
-        ]); //Membuat rule valid_detail_shiftasi input
+        ]); //Membuat rule validasi input
 
-        if($valid_detail_shiftate->fails()){
-            return response(['message' => $valid_detail_shiftate->errors()], 400); //Return error invalid_detail_shift input
+        if($validate->fails()){
+            return response(['message' => $validate->errors()], 400); //Return error invalid input
         }
 
         $DetailShift = DetailShift::create($storeData);
 
         return response([
-            'message' => 'Add DetailShift Success',
+            'message' => 'Add Detail_Shift Success',
             'data' => $DetailShift
-        ], 200); //Return message data detail shift baru dalam bentuk JSON
+        ], 200); //Return message data Detail_Shift baru dalam bentuk JSON
     }
+    
 
     //Method untuk menghapus 1 data detail shift (DELETE)
     public function destroy($id_detail_shift){
@@ -108,13 +107,13 @@ class DetailShiftController extends Controller
         } //Return message saat data detail shift tid_detail_shiftak ditemukan
 
         $updateData = $request->all();
-        $valid_detail_shiftate = Valid_detail_shiftator::make($updateData, [
+        $valid_detail_shift = Validator::make($updateData, [
             'id_jadwal' => 'required|numeric',
             'id_pegawai' => 'required|numeric'
         ]); //Membuat rule valid_detail_shiftasi input
 
-        if($valid_detail_shiftate->fails()){
-            return response(['message' => $valid_detail_shiftate->errors()], 400); //Return error invalid_detail_shift input
+        if($valid_detail_shift->fails()){
+            return response(['message' => $valid_detail_shift->errors()], 400); //Return error invalid_detail_shift input
         }
 
         $DetailShift->id_jadwal = $updateData['id_jadwal']; //Edit Nama Kelas

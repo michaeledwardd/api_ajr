@@ -75,9 +75,6 @@ class CustomerController extends Controller
         if($request->upload_berkas == null){
             $request->status_berkas = sprintf("not-verified");
         }
-        else{
-            $request->status_berkas = sprintf("verified");
-        }
 
         $Customer = Customer::create([
             'id_customer'=>'CUS'.$datenow.'-'.$id_generate,
