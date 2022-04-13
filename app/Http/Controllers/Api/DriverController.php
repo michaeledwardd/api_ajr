@@ -88,7 +88,7 @@ class DriverController extends Controller
             'jenis_kelamin' => 'required|regex:/^[\pL\s\-]+$/u',
             'alamat' => 'required',
             'email_driver' => 'required|email:rfc,dns|unique:Driver',
-            'password' => 'required',
+            'password',
             'foto_driver' => 'required',
             'status_tersedia' => 'required|regex:/^[\pL\s\-]+$/u',
             'status_berkas' => 'required|regex:/^[\pL\s\-]+$/u',
@@ -98,11 +98,11 @@ class DriverController extends Controller
             'tgl_lahir' => 'required|date_format:Y-m-d',
             'rerata_rating' => 'numeric',
             'mahir_inggris' => 'required',
-            'upload_sim' => 'required',
-            'upload_bebas_napza' => 'required',
-            'upload_sehat_jiwa' => 'required',
-            'upload_sehat_jasmani' => 'required',
-            'upload_skck' => 'required'
+            'upload_sim' => 'required|max:1024|mimes:jpg,png,jpeg|image',
+            'upload_bebas_napza' => 'required|max:1024|mimes:jpg,png,jpeg|image',
+            'upload_sehat_jiwa' => 'required|max:1024|mimes:jpg,png,jpeg|image',
+            'upload_sehat_jasmani' => 'required|max:1024|mimes:jpg,png,jpeg|image',
+            'upload_skck' => 'required|max:1024|mimes:jpg,png,jpeg|image'
         ]);
 
         if($validate->fails())
@@ -112,14 +112,21 @@ class DriverController extends Controller
         $id_generate = sprintf("%03d", $count);
         $datenow = Carbon::now()->format('dmy');
 
+        $fotoDriver = $request->foto_driver->store('img_driver',['disk'=>'public']);
+        $fotoSIM = $request->upload_sim->store('img_SIM',['disk'=>'public']);
+        $fotoBebasNapza = $request->upload_bebas_napza->store('img_bebas_napza',['disk'=>'public']);
+        $fotoSehatJiwa = $request->upload_sehat_jiwa->store('img_sehat_jiwa',['disk'=>'public']);
+        $fotoSehatJasmani = $request->upload_sehat_jasmani->store('img_sehat_jasmani',['disk'=>'public']);
+        $fotoSKCK = $request->upload_skck->store('img_skck',['disk'=>'public']);
+
         $driver = Driver::create([
             'id_driver'=>'DRV-'.$datenow.$id_generate,
             'nama_driver'=>$request->nama_driver,
             'jenis_kelamin'=>$request->jenis_kelamin,
             'alamat'=>$request->alamat,
             'email_driver'=>$request->email_driver,
-            'password'=>$request->password,
-            'foto_driver'=>$request->foto_driver,
+            'password'=>bcrypt($request->tgl_lahir),
+            'foto_driver'=>$fotoDriver,
             'status_tersedia'=>$request->status_tersedia,
             'status_berkas'=>$request->status_berkas,
             'is_aktif'=>$request->is_aktif,
@@ -128,11 +135,11 @@ class DriverController extends Controller
             'tgl_lahir'=>$request->tgl_lahir,
             'rerata_rating'=>$request->rerata_rating,
             'mahir_inggris' =>$request->mahir_inggris,
-            'upload_sim' =>$request->upload_sim,
-            'upload_bebas_napza' =>$request->upload_bebas_napza,
-            'upload_sehat_jiwa' =>$request->upload_sehat_jiwa,
-            'upload_sehat_jasmani' =>$request->upload_sehat_jasmani,
-            'upload_skck' =>$request->upload_skck
+            'upload_sim' =>$fotoSIM,
+            'upload_bebas_napza' =>$fotoBebasNapza,
+            'upload_sehat_jiwa' =>$fotoSehatJiwa,
+            'upload_sehat_jasmani' =>$fotoSehatJasmani,
+            'upload_skck' =>$fotoSKCK,
         ]);
      
         return response([
@@ -182,7 +189,7 @@ class DriverController extends Controller
             'alamat' => 'required',
             'email_driver' => 'required|email:rfc,dns',
             'password' => 'required',
-            'foto_driver' => 'required',
+            'foto_driver' => 'max:1024|mimes:jpg,png,jpeg|image',
             'status_tersedia' => 'required|regex:/^[\pL\s\-]+$/u',
             'status_berkas' => 'required|regex:/^[\pL\s\-]+$/u',
             'is_aktif' => 'required',
@@ -191,11 +198,11 @@ class DriverController extends Controller
             'tgl_lahir' => 'required|date_format:Y-m-d',
             // 'rerata_rating',
             'mahir_inggris' => 'required',
-            'upload_sim' => 'required',
-            'upload_bebas_napza' => 'required',
-            'upload_sehat_jiwa' => 'required',
-            'upload_sehat_jasmani' => 'required',
-            'upload_skck' => 'required'
+            'upload_sim' => 'max:1024|mimes:jpg,png,jpeg|image',
+            'upload_bebas_napza' => 'max:1024|mimes:jpg,png,jpeg|image',
+            'upload_sehat_jiwa' => 'max:1024|mimes:jpg,png,jpeg|image',
+            'upload_sehat_jasmani' => 'max:1024|mimes:jpg,png,jpeg|image',
+            'upload_skck' => 'max:1024|mimes:jpg,png,jpeg|image'
             
         ]); //Membuat rule validasi input
 
@@ -208,7 +215,10 @@ class DriverController extends Controller
         $Driver->alamat = $updateData['alamat'];
         $Driver->email_driver = $updateData['email_driver'];
         $Driver->password = $updateData['password'];
-        $Driver->foto_driver = $updateData['foto_driver'];
+        if(isset($request->foto_driver)){
+            $fotoDriver = $request->foto_driver->store('img_driver',['disk'=>'public']);
+            $Driver->foto_driver = $fotoDriver;
+        } 
         $Driver->status_tersedia = $updateData['status_tersedia'];
         $Driver->status_berkas = $updateData['status_berkas'];
         $Driver->is_aktif = $updateData['is_aktif'];
@@ -217,12 +227,27 @@ class DriverController extends Controller
         $Driver->tgl_lahir = $updateData['tgl_lahir'];
         // $Driver->rerata_rating = $updateData['rerata_rating'];
         $Driver->mahir_inggris = $updateData['mahir_inggris'];
-        $Driver->upload_sim = $updateData['is_aktif'];
-        $Driver->upload_bebas_napza = $updateData['upload_bebas_napza'];
-        $Driver->upload_sehat_jiwa = $updateData['upload_sehat_jiwa'];
-        $Driver->upload_sehat_jasmani = $updateData['upload_sehat_jasmani'];
-        $Driver->upload_skck = $updateData['upload_skck'];
-
+        if(isset($request->upload_sim)){
+            $fotoSIM = $request->upload_sim->store('img_SIM',['disk'=>'public']);
+            $Driver->upload_sim = $fotoSIM;
+        } 
+        if(isset($request->upload_bebas_napza)){
+            $fotoBebasNapza = $request->upload_bebas_napza->store('img_bebas_napza',['disk'=>'public']);
+            $Driver->upload_bebas_napza = $fotoBebasNapza;
+        }
+        if(isset($request->upload_sehat_jiwa)){
+            $fotoSehatJiwa = $request->upload_sehat_jiwa->store('img_sehat_jiwa',['disk'=>'public']);
+            $Driver->upload_sehat_jiwa = $fotoSehatJiwa;
+        }
+        if(isset($request->upload_sehat_jasmani)){
+            $fotoSehatJasmani = $request->upload_sehat_jasmani->store('img_sehat_jasmani',['disk'=>'public']);
+            $Driver->upload_sehat_jasmani = $fotoSehatJasmani;
+        }
+        if(isset($request->upload_skck)){
+            $fotoSKCK = $request->upload_skck->store('img_skck',['disk'=>'public']);
+            $Driver->upload_skck= $fotoSKCK;
+        }
+        
         if($Driver->save()){
             return response([
                 'message' => 'Update Driver Success',

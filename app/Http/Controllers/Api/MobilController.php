@@ -95,7 +95,7 @@ class MobilController extends Controller
             'kategori_aset' => 'regex:/^[\pL\s\-]+$/u',
             'status_ketersediaan' => 'regex:/^[\pL\s\-]+$/u',
             'plat_nomor' => 'required|unique:Mobil',
-            'foto_mobil' => 'required',
+            'foto_mobil' => 'required|max:1024|mimes:jpg,png,jpeg|image',
             'tipe_mobil' => 'required',
             'kapasitas' => 'required|numeric',
             'biaya_sewa' => 'required|numeric',
@@ -117,6 +117,8 @@ class MobilController extends Controller
             $request->kategori_aset = sprintf("Mitra");
             $request->status_ketersediaan = sprintf("tersedia");
         }
+        
+        $fotoMobil = $request->foto_mobil->store('img_mobil',['disk'=>'public']);
 
         $Mobil = Mobil::create([
             'id_mitra'=>$request->id_mitra,
@@ -129,7 +131,7 @@ class MobilController extends Controller
             'kategori_aset'=>$request->kategori_aset,
             'status_ketersediaan'=>$request->status_ketersediaan,
             'plat_nomor'=>$request->plat_nomor,
-            'foto_mobil'=>$request->foto_mobil,
+            'foto_mobil'=>$fotoMobil,
             'tipe_mobil'=>$request->tipe_mobil,
             'kapasitas'=>$request->kapasitas,
             'biaya_sewa'=>$request->biaya_sewa,
@@ -192,7 +194,7 @@ class MobilController extends Controller
             'kategori_aset' => 'required|regex:/^[\pL\s\-]+$/u',
             'status_ketersediaan' => 'required|regex:/^[\pL\s\-]+$/u',
             'plat_nomor' => 'required',
-            'foto_mobil' => 'required',
+            'foto_mobil' => 'max:1024|mimes:jpg,png,jpeg|image',
             'tipe_mobil' => 'required',
             'kapasitas' => 'required|numeric',
             'biaya_sewa' => 'required|numeric',
@@ -216,7 +218,10 @@ class MobilController extends Controller
         $Mobil->kategori_aset = $updateData['kategori_aset'];
         $Mobil->status_ketersediaan = $updateData['status_ketersediaan']; 
         $Mobil->plat_nomor = $updateData['plat_nomor']; 
-        $Mobil->foto_mobil = $updateData['foto_mobil']; 
+        if(isset($request->foto_mobil)){
+            $fotoMobil = $request->foto_mobil->store('img_mobil',['disk'=>'public']);
+            $Mobil->foto_mobil = $fotoMobil;
+        }
         $Mobil->tipe_mobil = $updateData['tipe_mobil'];  
         $Mobil->kapasitas = $updateData['kapasitas']; 
         $Mobil->biaya_sewa = $updateData['biaya_sewa']; 

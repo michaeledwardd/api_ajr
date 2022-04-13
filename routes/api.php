@@ -51,7 +51,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('pegawaibystatus', 'Api\PegawaiController@showbyStatus');
     Route::post('pegawai', 'Api\PegawaiController@store');
     Route::get('pegawai/{id_pegawai}', 'Api\PegawaiController@show');
-    Route::put('pegawai/{id_pegawai}', 'Api\PegawaiController@update');
+    Route::post('pegawai/{id_pegawai}', 'Api\PegawaiController@update');
     Route::delete('pegawai/{id_pegawai}', 'Api\PegawaiController@destroy');
 
     Route::get('customer', 'Api\CustomerController@index');
@@ -65,7 +65,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('driverstatustersedia', 'Api\DriverController@showstatusTersedia');
     Route::post('driver', 'Api\DriverController@store');
     Route::get('driver/{id_driver}', 'Api\DriverController@show');
-    Route::put('driver/{id_driver}', 'Api\DriverController@update');
+    Route::post('driver/{id_driver}', 'Api\DriverController@update');
     Route::delete('driver/{id_driver}', 'Api\DriverController@destroy');
 
     Route::get('mobil', 'Api\MobilController@index');
@@ -73,10 +73,11 @@ use Illuminate\Support\Facades\Route;
     Route::get('mobilbystatus', 'Api\MobilController@showbyStatus');
     Route::post('mobil', 'Api\MobilController@store');
     Route::get('mobil/{id_mobil}', 'Api\MobilController@show');
-    Route::put('mobil/{id_mobil}', 'Api\MobilController@update');
+    Route::post('mobil/{id_mobil}', 'Api\MobilController@update');
     Route::delete('mobil/{id_mobil}', 'Api\MobilController@destroy');
 
     Route::get('transaksi', 'Api\TransaksiController@index');
+    Route::get('transaksiall', 'Api\TransaksiController@showdataAll');
     Route::post('transaksi', 'Api\TransaksiController@store');
     Route::get('transaksi/{id_transaksi}', 'Api\TransaksiController@show');
     Route::put('transaksi/{id_transaksi}', 'Api\TransaksiController@update');

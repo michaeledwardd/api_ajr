@@ -11,15 +11,31 @@ use Carbon\Carbon;
 
 class TransaksiController extends Controller
 {
-    //Method untuk menampilkan semua data product (READ)
+    // Method untuk menampilkan semua data product (READ)
     public function index(){
+        $transaksis = Transaksi::all(); //Mengambil semua data Transaksi
+
+        if(count($transaksis) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $transaksis
+            ], 200);
+        } //Return data semua Transaksi dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Transaksi kosong
+    }
+
+    public function showdataAll(){
         $transaksis = DB::table('transaksi')
-        ->join('promo','transaksi.id_promo','=','promo.id_promo')
-        ->join('driver','transaksi.id_driver','=','driver.id_driver')
-        ->join('customer','transaksi.id_customer','=','customer.id_customer')
-        ->join('pegawai','transaksi.id_pegawai','=','pegawai.id_pegawai')
-        ->join('mobil','transaksi.id_mobil','=','mobil.id_mobil')
-        ->select('transaksi.*','jenis_promo','jumlah_potongan','nama_driver','biaya_sewa_driver','nama_customer','nama_pegawai','nama_mobil')
+        ->select('id_transaksi','promo.id_promo','driver.id_driver','pegawai.id_pegawai','mobil.id_mobil','customer.id_customer','jenis_promo','jumlah_potongan','nama_driver','biaya_sewa_driver','nama_customer','nama_pegawai','nama_mobil')
+        ->leftjoin('promo', 'transaksi.id_promo', '=', 'promo.id_promo')
+        ->leftjoin('driver', 'transaksi.id_driver', '=' ,'driver.id_driver')
+        ->leftjoin('customer', 'transaksi.id_customer', '=', 'customer.id_customer')
+        ->leftjoin('pegawai', 'transaksi.id_pegawai', '=', 'pegawai.id_pegawai')
+        ->leftjoin('mobil', 'transaksi.id_mobil', '=', 'mobil.id_mobil')
         ->get(); //Mengambil semua data Transaksi
 
         if(count($transaksis) > 0){

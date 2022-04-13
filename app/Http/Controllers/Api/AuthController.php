@@ -13,28 +13,28 @@ use Validator;
 
 class AuthController extends Controller
 {
-    // public function register(Request $request)
-    // {
-    //     $registrationData = $request->all();
-    //     $validate = Validator::make($registrationData,[
-    //         'name'=>'required|max:60',
-    //         'email'=>'required|email:rfc,dns',
-    //         'nomorIdentitas' => 'required|max:10',
-    //         'username' => 'required|max:20',
-    //         'password'=>'required'
-    //     ]);
+    public function register(Request $request)
+    {
+        $registrationData = $request->all();
+        $validate = Validator::make($registrationData,[
+            'name'=>'required|max:60',
+            'email'=>'required|email:rfc,dns',
+            'nomorIdentitas' => 'required|max:10',
+            'username' => 'required|max:20',
+            'password'=>'required'
+        ]);
 
-    //     if($validate->fails())
-    //         return response(['message' => $validate->errors()], 400);
+        if($validate->fails())
+            return response(['message' => $validate->errors()], 400);
         
-    //     $registrationData['password'] = bcrypt($request->password);
-    //     $user = User::create($registrationData);
-    //     $user->sendApiEmailVerificationNotification();
-    //     return response([
-    //         'message' => 'Register Succes',
-    //         'user' => $user
-    //     ], 200);
-    // }
+        $registrationData['password'] = bcrypt($request->password);
+        $user = User::create($registrationData);
+        $user->sendApiEmailVerificationNotification();
+        return response([
+            'message' => 'Register Succes',
+            'user' => $user
+        ], 200);
+    }
 
     public function login(Request $request)
     {
@@ -61,11 +61,33 @@ class AuthController extends Controller
         }
         else if(Driver::where('email_driver','=',$loginData['email'])->first())
         {
+            $loginDriver = Driver::where('email_driver','=',$loginData['email'])->get();
 
+            foreach($loginDriver as $value){
+                $temp = $value['password'];
+            }
+            if(Hash::check($loginData['password'], $temp)){
+                $driver = Driver::where('password',$loginData['email'])->first();
+            }
+            return response([
+                'message' => 'authenticated',
+                'data' => $loginDriver
+            ]);
         }
         else if(Pegawai::where('email','=',$loginData['email'])->first())
         {
+            $loginPegawai = Pegawai::where('email','=',$loginData['email'])->get();
 
+            foreach($loginPegawai as $value){
+                $temp = $value['password'];
+            }
+            if(Hash::check($loginData['password'], $temp)){
+                $pegawai = Pegawai::where('password',$loginData['email'])->first();
+            }
+            return response([
+                'message' => 'authenticated',
+                'data' => $loginPegawai
+            ]);
         }
 
         if($validate->fails())

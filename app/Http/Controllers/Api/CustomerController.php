@@ -144,7 +144,7 @@ class CustomerController extends Controller
             'jenis_kelamin' => 'required|regex:/^[\pL\s\-]+$/u',
             'email_customer' => 'required|email:rfc,dns',
             'no_telp' => 'required',
-            'upload_berkas' => 'required|max:1024|mimes:jpg,png,jpeg|image',
+            'upload_berkas' => 'max:1024|mimes:jpg,png,jpeg|image',
             'status_berkas' => 'required',
             'nomor_kartupengenal' => 'required|numeric',
             'no_sim' => 'numeric',

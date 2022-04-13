@@ -71,12 +71,12 @@ class PegawaiController extends Controller
         $validate = Validator::make($storeData, [
             'id_role' => 'required|numeric',
             'nama_pegawai' => 'required|regex:/^[\pL\s\-]+$/u',
-            'foto_pegawai' => 'required',
+            'foto_pegawai' => 'required|max:1024|mimes:jpg,png,jpeg|image',
             'tgl_lahir' => 'required|date_format:Y-m-d',
             'jenis_kelamin' => 'required|regex:/^[\pL\s\-]+$/u',
             'alamat' => 'required',
             'email' => 'required|unique:Pegawai|email:rfc,dns',
-            'password' => 'required',
+            'password',
             'is_aktif' => 'required'
         ]); //Membuat rule validasi input
 
@@ -84,7 +84,19 @@ class PegawaiController extends Controller
             return response(['message' => $validate->errors()], 400); //Return error invalid input
         }
 
-        $Pegawai = Pegawai::create($storeData);
+        $fotoPegawai = $request->foto_pegawai->store('img_pegawai',['disk'=>'public']);
+
+        $Pegawai = Pegawai::create([
+            'id_role'=>$request->id_role,
+            'nama_pegawai'=>$request->nama_pegawai,
+            'foto_pegawai'=>$fotoPegawai,
+            'tgl_lahir'=>$request->tgl_lahir,
+            'jenis_kelamin'=>$request->jenis_kelamin,
+            'alamat'=>$request->alamat,
+            'email'=>$request->email,
+            'password'=>bcrypt($request->tgl_lahir),
+            'is_aktif'=>$request->is_aktif,
+        ]);
 
         return response([
             'message' => 'Add Pegawai Success',
@@ -131,12 +143,12 @@ class PegawaiController extends Controller
         $validate = Validator::make($updateData, [
             'id_role' => 'required|numeric',
             'nama_pegawai' => 'required|regex:/^[\pL\s\-]+$/u',
-            'foto_pegawai' => 'required',
+            'foto_pegawai' => 'max:1024|mimes:jpg,png,jpeg|image',
             'tgl_lahir' => 'required|date_format:Y-m-d',
             'jenis_kelamin' => 'required|regex:/^[\pL\s\-]+$/u',
             'alamat' => 'required',
             'email' => 'required|email:rfc,dns',
-            'password' => 'required',
+            'password',
             'is_aktif' => 'required'
         ]); //Membuat rule validasi input
 
@@ -145,8 +157,11 @@ class PegawaiController extends Controller
         }
 
         $Pegawai->id_role = $updateData['id_role']; 
-        $Pegawai->nama_pegawai = $updateData['nama_pegawai']; 
-        $Pegawai->foto_pegawai = $updateData['foto_pegawai']; 
+        $Pegawai->nama_pegawai = $updateData['nama_pegawai'];
+        if(isset($request->foto_pegawai)){
+            $fotoPegawai = $request->foto_pegawai->store('img_pegawai',['disk'=>'public']);
+            $Pegawai->foto_pegawai = $fotoPegawai;
+        } 
         $Pegawai->tgl_lahir = $updateData['tgl_lahir'];
         $Pegawai->jenis_kelamin = $updateData['jenis_kelamin'];
         $Pegawai->alamat = $updateData['alamat'];
