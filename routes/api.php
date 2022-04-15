@@ -80,9 +80,10 @@ use Illuminate\Support\Facades\Route;
     Route::get('transaksiall', 'Api\TransaksiController@showdataAll');
     Route::post('transaksi', 'Api\TransaksiController@store');
     Route::get('transaksi/{id_transaksi}', 'Api\TransaksiController@show');
-    Route::put('transaksi/{id_transaksi}', 'Api\TransaksiController@update');
+    Route::post('transaksi/{id_transaksi}', 'Api\TransaksiController@update');
     Route::delete('transaksi/{id_transaksi}', 'Api\TransaksiController@destroy');
     
+    Route::get('hitungrerata', 'Api\TransaksiController@hitungreratarating');
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

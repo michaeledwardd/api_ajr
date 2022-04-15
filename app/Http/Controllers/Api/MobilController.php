@@ -85,7 +85,7 @@ class MobilController extends Controller
     public function store(Request $request){
         $storeData = $request->all(); //Mengambil semua input dari API Client
         $validate = Validator::make($storeData, [
-            'id_mitra' => 'numeric',
+            'id_mitra',
             'nama_mobil' => 'required|regex:/^[\pL\s\-]+$/u',
             'jenis_transmisi' => 'required|regex:/^[\pL\s\-]+$/u',
             'bahan_bakar' => 'required|regex:/^[\pL\s\-]+$/u',
@@ -110,11 +110,11 @@ class MobilController extends Controller
         }
 
         if(($request->id_mitra)===NULL){
-            $request->kategori_aset = sprintf("Perusahaan");
+            $request->kategori_aset = sprintf("perusahaan");
             $request->status_ketersediaan = sprintf("tidak tersedia");
         }
         else{
-            $request->kategori_aset = sprintf("Mitra");
+            $request->kategori_aset = sprintf("mitra");
             $request->status_ketersediaan = sprintf("tersedia");
         }
         
@@ -184,7 +184,7 @@ class MobilController extends Controller
 
         $updateData = $request->all();
         $validate = Validator::make($updateData, [
-            'id_mitra' => 'numeric',
+            'id_mitra',
             'nama_mobil' => 'required|regex:/^[\pL\s\-]+$/u',
             'jenis_transmisi' => 'required|regex:/^[\pL\s\-]+$/u',
             'bahan_bakar' => 'required|regex:/^[\pL\s\-]+$/u',

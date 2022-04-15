@@ -9,6 +9,7 @@ use Validator;
 use App\Models\Driver;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Http\Controllers\Api\TransaksiController;
 
 class DriverController extends Controller
 {
@@ -133,7 +134,7 @@ class DriverController extends Controller
             'biaya_sewa_driver'=>$request->biaya_sewa_driver,
             'no_telp'=>$request->no_telp,
             'tgl_lahir'=>$request->tgl_lahir,
-            'rerata_rating'=>$request->rerata_rating,
+            // 'rerata_rating'=>$request->rerata_rating,
             'mahir_inggris' =>$request->mahir_inggris,
             'upload_sim' =>$fotoSIM,
             'upload_bebas_napza' =>$fotoBebasNapza,
@@ -209,12 +210,16 @@ class DriverController extends Controller
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input
         }
-
+        $id_driver = $request->id_driver;
+        $hitungrerata= DB::select("SELECT SUM(rating_perform_driver) / COUNT(id_driver) AS 'reratabaru' FROM transaksi WHERE id_driver = '$id_driver' ");
+        $hasilrerata = array_column($hitungrerata, 'reratabaru');
+        $reratafinal =  DB::update("UPDATE driver SET rerata_rating = '$hasilrerata[0]' WHERE id_driver = '$id_driver' ");
+        
         $Driver->nama_driver = $updateData['nama_driver']; 
         $Driver->jenis_kelamin = $updateData['jenis_kelamin'];
         $Driver->alamat = $updateData['alamat'];
         $Driver->email_driver = $updateData['email_driver'];
-        $Driver->password = $updateData['password'];
+        $Driver->password = bcrypt($request->tgl_lahir);
         if(isset($request->foto_driver)){
             $fotoDriver = $request->foto_driver->store('img_driver',['disk'=>'public']);
             $Driver->foto_driver = $fotoDriver;
@@ -225,7 +230,9 @@ class DriverController extends Controller
         $Driver->biaya_sewa_driver = $updateData['biaya_sewa_driver'];
         $Driver->no_telp = $updateData['no_telp'];
         $Driver->tgl_lahir = $updateData['tgl_lahir'];
-        // $Driver->rerata_rating = $updateData['rerata_rating'];
+        if(isset($request->rerata_rating)){
+            $Driver->rerata_rating = $reratafinal;
+        }
         $Driver->mahir_inggris = $updateData['mahir_inggris'];
         if(isset($request->upload_sim)){
             $fotoSIM = $request->upload_sim->store('img_SIM',['disk'=>'public']);

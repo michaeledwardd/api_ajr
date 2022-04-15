@@ -30,13 +30,13 @@ class TransaksiController extends Controller
 
     public function showdataAll(){
         $transaksis = DB::table('transaksi')
-        ->select('id_transaksi','promo.id_promo','driver.id_driver','pegawai.id_pegawai','mobil.id_mobil','customer.id_customer','jenis_promo','jumlah_potongan','nama_driver','biaya_sewa_driver','nama_customer','nama_pegawai','nama_mobil')
+        ->select('id_transaksi','promo.id_promo','driver.id_driver','pegawai.id_pegawai','mobil.id_mobil','customer.id_customer','transaksi.*','jenis_promo','jumlah_potongan','nama_driver','biaya_sewa_driver','nama_customer','nama_pegawai','nama_mobil')
         ->leftjoin('promo', 'transaksi.id_promo', '=', 'promo.id_promo')
         ->leftjoin('driver', 'transaksi.id_driver', '=' ,'driver.id_driver')
         ->leftjoin('customer', 'transaksi.id_customer', '=', 'customer.id_customer')
         ->leftjoin('pegawai', 'transaksi.id_pegawai', '=', 'pegawai.id_pegawai')
         ->leftjoin('mobil', 'transaksi.id_mobil', '=', 'mobil.id_mobil')
-        ->get(); //Mengambil semua data Transaksi
+        ->orderBy('created_at','asc')->get(); //Mengambil semua data Transaksi
 
         if(count($transaksis) > 0){
             return response([
@@ -76,23 +76,23 @@ class TransaksiController extends Controller
             'id_mobil' => 'required|numeric',
             'id_pegawai' => 'required|numeric',
             'id_driver',
-            'id_promo'=>'numeric',
+            'id_promo',
             'tgl_transaksi' => 'required|date_format:Y-m-d',
             'tgl_pinjam' => 'required|date_format:Y-m-d',
             'tgl_kembali' => 'required|date_format:Y-m-d|after:tgl_pinjam',
             'tgl_selesai_pinjam' => 'required|date_format:Y-m-d|after:tgl_pinjam',
             'jenis_peminjaman',
-            'cek_terlambat' =>'required',
-            'total_denda' => 'required|numeric',
-            'total_biaya_pinjam' => 'required|numeric',
-            'biaya_denda' => 'required|numeric',
-            'total_sewa_driver' => 'required|numeric',
-            'bukti_bayar' => 'required',
-            'subtotal_all' => 'required|numeric',
+            'cek_terlambat',
+            'total_denda' => 'numeric',
+            'total_biaya_pinjam' => 'numeric',
+            'biaya_denda' => 'numeric',
+            'total_sewa_driver' => 'numeric',
+            'bukti_bayar' => 'required|max:1024|mimes:jpg,png,jpeg|image',
+            'subtotal_all' => 'numeric',
             'status_transaksi' => 'required|regex:/^[\pL\s\-]+$/u',
             'metode_bayar' => 'required|regex:/^[\pL\s\-]+$/u',
-            'rating_perform_driver' => 'required|numeric',
-            'rating_perform_ajr' => 'required|numeric'
+            'rating_perform_driver',
+            'rating_perform_ajr',
         ]); //Membuat rule validasi input
 
         if($validate->fails()){
@@ -102,6 +102,8 @@ class TransaksiController extends Controller
         $count= DB::table('transaksi')->count() +1;
         $id_generate = sprintf("%03d", $count);
         $datenow = Carbon::now()->format('dmy');
+
+        $buktiBayar = $request->bukti_bayar->store('img_bukti_bayar',['disk'=>'public']);
 
         if(($request->bukti_bayar)=== null){
             $request->metode_bayar = sprintf("cash");
@@ -120,6 +122,11 @@ class TransaksiController extends Controller
             $request->jenis_peminjaman = sprintf("mobil + driver");
         }
 
+        $id_driver = $request->id_driver;
+        $hitungrerata= DB::select("SELECT SUM(rating_perform_driver) / COUNT(id_driver) AS 'reratabaru' FROM transaksi WHERE id_driver = '$id_driver' GROUP BY id_driver");
+        $hasilrerata = array_column($hitungrerata, 'reratabaru');
+        DB::update("UPDATE driver SET rerata_rating = '$hasilrerata[0]' WHERE id_driver = '$id_driver' ");
+
         $Transaksi = Transaksi::create([
             'id_transaksi'=>'TRN'.$datenow.$kode_pinjam.'-'.$id_generate,
             'id_customer'=>$request->id_customer,
@@ -130,14 +137,16 @@ class TransaksiController extends Controller
             'tgl_transaksi'=>$request->tgl_transaksi,
             'tgl_pinjam'=>$request->tgl_pinjam,
             'tgl_kembali'=>$request->tgl_kembali,
+            'waktu_kembali'=>$request->waktu_kembali,
             'tgl_selesai_pinjam'=>$request->tgl_selesai_pinjam,
+            'waktu_selesai_pinjam'=>$request->waktu_selesai_pinjam,
             'jenis_peminjaman'=>$request->jenis_peminjaman,
             'cek_terlambat'=>$request->cek_terlambat,
             'total_denda'=>$request->total_denda,
             'total_biaya_pinjam'=>$request->total_biaya_pinjam,
             'biaya_denda'=>$request->biaya_denda,
             'total_sewa_driver'=>$request->total_sewa_driver,
-            'bukti_bayar'=>$request->bukti_bayar,
+            'bukti_bayar'=>$buktiBayar,
             'subtotal_all'=>$request->subtotal_all,
             'status_transaksi'=>$request->status_transaksi,
             'metode_bayar'=>$request->metode_bayar,
@@ -192,22 +201,22 @@ class TransaksiController extends Controller
             'id_mobil' => 'required|numeric',
             'id_pegawai' => 'required|numeric',
             'id_driver',
-            'id_promo'=>'numeric',
+            'id_promo',
             'tgl_transaksi' => 'required|date_format:Y-m-d',
             'tgl_pinjam' => 'required|date_format:Y-m-d',
             'tgl_kembali' => 'required|date_format:Y-m-d|after:tgl_pinjam',
             'tgl_selesai_pinjam' => 'required|date_format:Y-m-d|after:tgl_pinjam',
             'jenis_peminjaman',
-            'cek_terlambat' =>'required',
-            'total_denda' => 'required|numeric',
-            'total_biaya_pinjam' => 'required|numeric',
-            'biaya_denda' => 'required|numeric',
-            'total_sewa_driver' => 'required|numeric',
-            'bukti_bayar' => 'required',
-            'subtotal_all' => 'required|numeric',
+            'cek_terlambat',
+            'total_denda' => 'numeric',
+            'total_biaya_pinjam' => 'numeric',
+            'biaya_denda' => 'numeric',
+            'total_sewa_driver' => 'numeric',
+            'bukti_bayar' => 'max:1024|mimes:jpg,png,jpeg|image',
+            'subtotal_all' => 'numeric',
             'status_transaksi' => 'required|regex:/^[\pL\s\-]+$/u',
-            'metode_bayar' => 'required|regex:/^[\pL\s\-]+$/u',
-            'rating_perform_driver' => 'required|numeric',
+            'metode_bayar' => 'regex:/^[\pL\s\-]+$/u',
+            'rating_perform_driver',
             'rating_perform_ajr' => 'required|numeric'
         ]); //Membuat rule validasi input
 
@@ -215,26 +224,69 @@ class TransaksiController extends Controller
             return response(['message' => $validate->errors()], 400); //Return error invalid input
         }
 
+        if(($request->bukti_bayar)=== null){
+            $request->metode_bayar = sprintf("cash");
+        }
+        else{
+            $request->metode_bayar = sprintf("transfer");
+        }
+
+        if(($request->id_driver)===NULL)
+        {
+            $kode_pinjam = sprintf("02");
+            $request->jenis_peminjaman = sprintf("mobil");
+        }
+        else{
+            $kode_pinjam = sprintf("01");
+            $request->jenis_peminjaman = sprintf("mobil + driver");
+        }
+
+        $id_driver = $request->id_driver;
+        $hitungrerata= DB::select("SELECT SUM(rating_perform_driver) / COUNT(id_driver) AS 'reratabaru' FROM transaksi WHERE id_driver = '$id_driver' ");
+        $hasilrerata = array_column($hitungrerata, 'reratabaru');
+        DB::update("UPDATE driver SET rerata_rating = '$hasilrerata[0]' WHERE id_driver = '$id_driver' ");
+
         $Transaksi->id_customer = $updateData['id_customer']; 
         $Transaksi->id_mobil = $updateData['id_mobil']; 
-        $Transaksi->id_pegawai = $updateData['id_pegawai']; 
-        $Transaksi->id_driver = $updateData['id_driver'];
-        $Transaksi->id_promo = $updateData['id_promo']; 
+        $Transaksi->id_pegawai = $updateData['id_pegawai'];
+        if(isset($request->id_driver)){
+            $Transaksi->id_driver = $updateData['id_driver'];
+        }
+        else{
+            $Transaksi->id_driver = NULL;
+        }
+
+        if(isset($request->id_promo)){
+            $Transaksi->id_promo = $updateData['id_promo']; 
+        }
+        else{
+            $Transaksi->id_promo = NULL; 
+        }
+        
         $Transaksi->tgl_transaksi = $updateData['tgl_transaksi']; 
         $Transaksi->tgl_pinjam = $updateData['tgl_pinjam']; 
         $Transaksi->tgl_kembali = $updateData['tgl_kembali'];
         $Transaksi->tgl_selesai_pinjam = $updateData['tgl_selesai_pinjam']; 
-        $Transaksi->jenis_peminjaman = $updateData['jenis_peminjaman']; 
-        $Transaksi->cek_terlambat = $updateData['cek_terlambat']; 
-        $Transaksi->total_denda = $updateData['total_denda'];
-        $Transaksi->total_biaya_pinjam = $updateData['total_biaya_pinjam']; 
-        $Transaksi->biaya_denda = $updateData['biaya_denda']; 
-        $Transaksi->total_sewa_driver = $updateData['total_sewa_driver']; 
-        $Transaksi->bukti_bayar = $updateData['bukti_bayar'];
-        $Transaksi->subtotal_all = $updateData['subtotal_all']; 
+        $Transaksi->jenis_peminjaman = $updateData['jenis_peminjaman'];
+        // $Transaksi->cek_terlambat = $updateData['cek_terlambat']; 
+        // $Transaksi->total_denda = $updateData['total_denda'];
+        // $Transaksi->total_biaya_pinjam = $updateData['total_biaya_pinjam'];
+        // $Transaksi->biaya_denda = $updateData['biaya_denda']; 
+        // $Transaksi->total_sewa_driver = $updateData['total_sewa_driver']; 
+        if(isset($request->bukti_bayar)){
+            $buktiBayar = $request->bukti_bayar->store('img_bukti_bayar',['disk'=>'public']);
+            $Transaksi->bukti_bayar = $buktiBayar;
+        }
+        // $Transaksi->subtotal_all = $updateData['subtotal_all']; 
         $Transaksi->status_transaksi = $updateData['status_transaksi']; 
         $Transaksi->metode_bayar = $updateData['metode_bayar']; 
-        $Transaksi->rating_perform_driver = $updateData['rating_perform_driver']; 
+        if(isset($request->rating_perform_driver)){
+             $Transaksi->rating_perform_driver = $updateData['rating_perform_driver']; 
+        }
+        else{
+            $Transaksi->rating_perform_driver = NULL; 
+        }
+       
         $Transaksi->rating_perform_ajr = $updateData['rating_perform_ajr']; 
 
         if($Transaksi->save()){
@@ -248,5 +300,21 @@ class TransaksiController extends Controller
             'message' => 'Update Transaksi Failed',
             'data' => null
         ], 400);
+    }
+
+    public function hitungRerataRating(){
+        $test = DB::select("SELECT id_driver, SUM(rating_perform_driver) / COUNT(id_driver) AS 'reratabaru' from transaksi group by id_driver");
+
+        if(count($test) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $test
+            ], 200);
+        } //Return data semua Transaksi dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Transaksi kosong
     }
 }
