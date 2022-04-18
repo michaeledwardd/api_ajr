@@ -85,6 +85,9 @@ use Illuminate\Support\Facades\Route;
     
     Route::get('hitungrerata', 'Api\TransaksiController@hitungreratarating');
 
+    //laporan
+    Route::get('cetakLaporanPendapatanMobil', 'Api\LaporanController@LaporanPendapatanMobil');
+    Route::get('cetakLaporanTopDriver', 'Api\LaporanController@LaporantopDriver');
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
     
