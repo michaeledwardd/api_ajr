@@ -55,7 +55,7 @@ class AuthController extends Controller
                 $customer = Customer::where('password',$loginData['email'])->first();
             }
             return response([
-                'message' => 'authenticated',
+                'message' => 'berhasil login sebagai customer',
                 'data' => $loginCustomer
             ]);
         }
@@ -70,7 +70,7 @@ class AuthController extends Controller
                 $driver = Driver::where('password',$loginData['email'])->first();
             }
             return response([
-                'message' => 'authenticated',
+                'message' => 'berhasil login sebagai driver',
                 'data' => $loginDriver
             ]);
         }
@@ -85,7 +85,7 @@ class AuthController extends Controller
                 $pegawai = Pegawai::where('password',$loginData['email'])->first();
             }
             return response([
-                'message' => 'authenticated',
+                'message' => 'berhasil login sebagai pegawai',
                 'data' => $loginPegawai
             ]);
         }

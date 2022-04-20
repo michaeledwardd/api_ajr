@@ -71,6 +71,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('mobil', 'Api\MobilController@index');
     Route::get('mobilmitra', 'Api\MobilController@showWithMitra');
     Route::get('mobilbystatus', 'Api\MobilController@showbyStatus');
+    Route::get('mobilotwhabis', 'Api\MobilController@showAsetkurangdari1Bulan');
     Route::post('mobil', 'Api\MobilController@store');
     Route::get('mobil/{id_mobil}', 'Api\MobilController@show');
     Route::post('mobil/{id_mobil}', 'Api\MobilController@update');
@@ -81,9 +82,13 @@ use Illuminate\Support\Facades\Route;
     Route::post('transaksi', 'Api\TransaksiController@store');
     Route::get('transaksi/{id_transaksi}', 'Api\TransaksiController@show');
     Route::post('transaksi/{id_transaksi}', 'Api\TransaksiController@update');
+    Route::post('updaterating/{id_transaksi}', 'Api\TransaksiController@updateRating');
+    Route::post('tambahtransaksi/{id_transaksi}', 'Api\TransaksiController@tambahTransaksiPembayaran');
     Route::delete('transaksi/{id_transaksi}', 'Api\TransaksiController@destroy');
     
     Route::get('hitungrerata', 'Api\TransaksiController@hitungreratarating');
+    Route::get('hitungbiayadriver/{id_driver}/{id_transaksi}', 'Api\TransaksiController@hitungBiayaDriver');
+    Route::get('hitungterlambat/{id_transaksi}', 'Api\TransaksiController@hitungTerlambat');
 
     //laporan
     Route::get('cetakLaporanPendapatanMobil', 'Api\LaporanController@LaporanPendapatanMobil');

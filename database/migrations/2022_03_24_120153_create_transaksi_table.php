@@ -34,7 +34,7 @@ return new class extends Migration
             $table->double('total_sewa_driver')->nullable();
             $table->string('bukti_bayar')->nullable();
             $table->double('subtotal_all')->nullable();
-            $table->string('status_transaksi');
+            $table->string('status_transaksi')->nullable();
             $table->string('metode_bayar')->nullable();
             $table->integer('rating_perform_driver')->nullable();
             $table->integer('rating_perform_ajr')->nullable();

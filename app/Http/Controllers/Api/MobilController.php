@@ -8,9 +8,31 @@ use Illuminate\Validation\Rule;
 use Validator;
 use App\Models\Mobil;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class MobilController extends Controller
 {
+    public function showAsetkurangdari1Bulan()
+    {
+        $from = Carbon::now()->format('ymd');
+        $mobil = DB::table('mobil')
+            ->whereRaw("DATEDIFF(mobil.akhir_kontrak, $from) < 30")
+            ->where('id_mitra', '!=', 'NULL')
+            ->get();
+
+        if (count($mobil) > 0) {
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $mobil
+            ], 200); // return data semua mobil dalam bentuk json
+        }
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); // return message data mobil kosong
+    }
+
     //Method untuk menampilkan semua data product (READ)
     public function index(){
         $mobils = Mobil::all(); //Mengambil semua data Mobil
