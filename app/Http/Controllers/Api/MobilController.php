@@ -16,8 +16,10 @@ class MobilController extends Controller
     {
         $from = Carbon::now()->format('ymd');
         $mobil = DB::table('mobil')
+            ->join('mitra','mobil.id_mitra','=','mitra.id_mitra')
+            ->select('mobil.id_mitra','mitra.id_mitra','mobil.*','nama_mitra','nomor_telepon')
             ->whereRaw("DATEDIFF(mobil.akhir_kontrak, $from) < 30")
-            ->where('id_mitra', '!=', 'NULL')
+            ->where('mitra.id_mitra', '!=', 'NULL')
             ->get();
 
         if (count($mobil) > 0) {

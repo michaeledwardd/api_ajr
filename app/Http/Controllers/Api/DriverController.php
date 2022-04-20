@@ -219,7 +219,7 @@ class DriverController extends Controller
         $Driver->jenis_kelamin = $updateData['jenis_kelamin'];
         $Driver->alamat = $updateData['alamat'];
         $Driver->email_driver = $updateData['email_driver'];
-        $Driver->password = bcrypt($request->tgl_lahir);
+        $Driver->password = bcrypt($updateData['tgl_lahir']);
         if(isset($request->foto_driver)){
             $fotoDriver = $request->foto_driver->store('img_driver',['disk'=>'public']);
             $Driver->foto_driver = $fotoDriver;

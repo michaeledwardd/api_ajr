@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-    Route::post('login', 'App\\Http\\Controllers\Api\AuthController@login');
+    Route::post('login', 'Api\AuthController@login');
 
     Route::get('promo', 'Api\PromoController@index');
     Route::get('promobystatus', 'Api\PromoController@showbyStatus');

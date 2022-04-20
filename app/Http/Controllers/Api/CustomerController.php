@@ -172,7 +172,7 @@ class CustomerController extends Controller
         $Customer->nomor_kartupengenal = $updateData['nomor_kartupengenal'];
         $Customer->no_sim = $updateData['no_sim'];
         $Customer->asal_customer = $updateData['asal_customer'];
-        $Customer->password = bcrypt($updateData['password']);
+        $Customer->password = bcrypt($updateData['tgl_lahir']);
         $Customer->usia_customer = $updateData['usia_customer'];
 
         if($Customer->save()){

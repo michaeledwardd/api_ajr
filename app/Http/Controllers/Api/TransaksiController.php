@@ -366,6 +366,6 @@ class TransaksiController extends Controller
 
         $tempselisih = array_column($selisihHari, 'selisih');
 
-        return $tempselisih;
+        return $selisihHari;
     }
 }

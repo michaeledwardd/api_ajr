@@ -44,49 +44,67 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
+        $customer = null;
+        $driver = null;
+        $pegawai = null;
+
         if(Customer::where('email_customer','=',$loginData['email'])->first())
         {
-            $loginCustomer = Customer::where('email_customer','=',$loginData['email'])->get();
+            $loginCustomer = Customer::where('email_customer','=',$loginData['email'])->first();
 
-            foreach($loginCustomer as $value){
-                $temp = $value['password'];
+            if(Hash::check($loginData['password'], $loginCustomer['password'])){
+                $customer = Customer::where('email_customer',$loginData['email'])->first();
             }
-            if(Hash::check($loginData['password'], $temp)){
-                $customer = Customer::where('password',$loginData['email'])->first();
+            else{
+                return response([
+                    'message' => 'email atau password salah',
+                    'data' => $customer
+                ], 404);
             }
+            $token = bcrypt(time());
             return response([
                 'message' => 'berhasil login sebagai customer',
-                'data' => $loginCustomer
+                'data' => $customer, 
+                'token'=> $token
             ]);
         }
         else if(Driver::where('email_driver','=',$loginData['email'])->first())
         {
             $loginDriver = Driver::where('email_driver','=',$loginData['email'])->get();
 
-            foreach($loginDriver as $value){
-                $temp = $value['password'];
+            if(Hash::check($loginData['password'], $loginDriver['password'])){
+                $driver = Driver::where('email_driver',$loginData['email'])->first();
             }
-            if(Hash::check($loginData['password'], $temp)){
-                $driver = Driver::where('password',$loginData['email'])->first();
+            else{
+                return response([
+                    'message' => 'email atau password salah',
+                ]);
             }
+            $token = bcrypt(time());
             return response([
                 'message' => 'berhasil login sebagai driver',
-                'data' => $loginDriver
-            ]);
+                'data' => $driver,
+                'token' => $token
+            ], 400);
         }
         else if(Pegawai::where('email','=',$loginData['email'])->first())
         {
-            $loginPegawai = Pegawai::where('email','=',$loginData['email'])->get();
+            $loginPegawai = Pegawai::where('email','=',$loginData['email'])->first();
 
-            foreach($loginPegawai as $value){
-                $temp = $value['password'];
+            if(Hash::check($loginData['password'], $loginPegawai['password'])){
+                $pegawai = Pegawai::where('email',$loginData['email'])->first();
             }
-            if(Hash::check($loginData['password'], $temp)){
-                $pegawai = Pegawai::where('password',$loginData['email'])->first();
+            else{
+                return response([
+                    'message' => 'email atau password salah',
+                    'data' => $pegawai
+                ], 400);
             }
+            $token = bcrypt(time());
             return response([
                 'message' => 'berhasil login sebagai pegawai',
-                'data' => $loginPegawai
+                'data' => $pegawai,
+                'token' => $token
             ]);
         }
 
