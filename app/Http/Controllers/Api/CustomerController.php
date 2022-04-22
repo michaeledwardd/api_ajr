@@ -54,16 +54,40 @@ class CustomerController extends Controller
             'alamat_customer' => 'required',
             'tgl_lahir' => 'required|date_format:Y-m-d',
             'jenis_kelamin' => 'required|regex:/^[\pL\s\-]+$/u',
-            'email_customer' => 'required|unique:Customer|email:rfc,dns',
+            'email_customer' => 'required|unique:Customer|email',
             'no_telp' => 'required',
             'upload_berkas' => 'required|max:1024|mimes:jpg,png,jpeg|image',
             'status_berkas',
             'nomor_kartupengenal' => 'required|numeric',
-            'no_sim' => 'numeric',
+            'no_sim' => 'required|numeric',
             'asal_customer' => 'required',
             'password',
             'usia_customer' => 'required|numeric'
+        ],[
+            'nama_customer.regex' => 'Inputan tidak boleh mengandung angka atau simbol lain',
+            'tgl_lahir.date_format' => 'Seharusnya YYYY-MM-DD',
+            'email_customer.unique' => 'Email sudah pernah digunakan',
+            'email_customer.email' => 'Format email salah',
+            'upload_berkas.mimes' => 'Hanya bisa menampung jpg, png, jpeg saja',
+            'upload_berkas.image' => 'Hanya bisa menerima image',
+            'nomor_kartupengenal' => 'Hanya bisa menerima angka',
+            'no_sim.numeric' => 'Hanya bisa menerima angka',
+            'usia_customer.numeric' => 'Hanya bisa menerima angka'
         ]); //Membuat rule validasi input
+
+        if(is_null($request->nama_customer) ||
+        is_null($request->alamat_customer) ||
+        is_null($request->tgl_lahir) ||
+        is_null($request->jenis_kelamin) ||
+        is_null($request->email_customer) ||
+        is_null($request->no_telp) ||
+        is_null($request->upload_berkas) ||
+        is_null($request->nomor_kartupengenal) ||
+        is_null($request->asal_customer) ||
+        is_null($request->usia_customer) ||
+        is_null($request->no_sim)){
+            return response(['message' => 'Inputan tidak boleh kosong'], 400);
+        }
 
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input
@@ -151,7 +175,31 @@ class CustomerController extends Controller
             'asal_customer' => 'required',
             'password',
             'usia_customer' => 'required|numeric'
+        ],
+        [
+            'nama_customer.regex' => 'Inputan tidak boleh mengandung angka atau simbol lain',
+            'tgl_lahir.date_format' => 'Seharusnya YYYY-MM-DD',
+            'email_customer.email' => 'Format email salah',
+            'upload_berkas.mimes' => 'Hanya bisa menampung jpg, png, jpeg saja',
+            'upload_berkas.image' => 'Hanya bisa menerima image',
+            'nomor_kartupengenal' => 'Hanya bisa menerima angka',
+            'no_sim.numeric' => 'Hanya bisa menerima angka',
+            'usia_customer.numeric' => 'Hanya bisa menerima angka'
         ]); //Membuat rule validasi input
+
+        if(is_null($request->nama_customer) ||
+        is_null($request->alamat_customer) ||
+        is_null($request->tgl_lahir) ||
+        is_null($request->jenis_kelamin) ||
+        is_null($request->email_customer) ||
+        is_null($request->no_telp) ||
+        is_null($request->upload_berkas) ||
+        is_null($request->nomor_kartupengenal) ||
+        is_null($request->asal_customer) ||
+        is_null($request->usia_customer) ||
+        is_null($request->no_sim)){
+            return response(['message' => 'Inputan tidak boleh kosong'], 400);
+        }
 
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input

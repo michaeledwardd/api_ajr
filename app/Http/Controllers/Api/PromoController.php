@@ -69,7 +69,19 @@ class PromoController extends Controller
             'jumlah_potongan' => 'required|numeric',
             'keterangan' => 'required',
             'status_promo' => 'required'
-        ]); //Membuat rule validasi input
+        ],
+        ['jumlah_potongan.numeric' => 'Inputan harus dalam bentuk angka',
+        'kode_promo.unique' => 'Kode Promo sudah pernah digunakan',
+        'jenis_promo.regex' => 'Inputan tidak boleh mengandung angka atau simbol lain',
+        'kode_promo.regex' => 'Inputan tidak boleh mengandung angka atau simbol lain']); //Membuat rule validasi input
+
+        if(is_null($request->kode_promo)
+        || is_null($request->jenis_promo)
+        || is_null($request->jumlah_potongan)
+        || is_null($request->keterangan)
+        || is_null($request->status_promo)){
+            return response(['message' => 'Inputan tidak boleh kosong'], 400);
+        }
 
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input
@@ -125,7 +137,20 @@ class PromoController extends Controller
             'jumlah_potongan' => 'required|numeric',
             'keterangan' => 'required',
             'status_promo' => 'required'
+        ],
+        [
+            'jumlah_potongan.numeric' => 'Inputan harus dalam bentuk angka',
+            'jenis_promo.regex' => 'Inputan tidak boleh mengandung angka atau simbol lain',
+            'kode_promo.regex' => 'Inputan tidak boleh mengandung angka atau simbol lain'
         ]); //Membuat rule validasi input
+
+        if(is_null($request->kode_promo)
+        || is_null($request->jenis_promo)
+        || is_null($request->jumlah_potongan)
+        || is_null($request->keterangan)
+        || is_null($request->status_promo)){
+            return response(['message' => 'Inputan tidak boleh kosong'], 400);
+        }
 
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input

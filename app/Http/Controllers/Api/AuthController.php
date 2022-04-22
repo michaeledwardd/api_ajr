@@ -40,13 +40,28 @@ class AuthController extends Controller
     {
         $loginData = $request->all();
         $validate = Validator::make($loginData, [
-            'email' => 'required|email:rfc,dns',
+            'email' => 'required|email',
             'password' => 'required'
+        ],
+        [
+            'email.email' => 'Kesalahan format input email',
         ]);
+
+        if(is_null($request->email) || is_null($request->password)){
+            return response(['message' => 'Inputan tidak boleh kosong'], 400);
+        }
 
         $customer = null;
         $driver = null;
         $pegawai = null;
+
+        //get token with random string//
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 10; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
 
         if(Customer::where('email_customer','=',$loginData['email'])->first())
         {
@@ -61,7 +76,7 @@ class AuthController extends Controller
                     'data' => $customer
                 ], 404);
             }
-            $token = bcrypt(time());
+            $token = bcrypt($randomString);
             return response([
                 'message' => 'berhasil login sebagai customer',
                 'data' => $customer, 
@@ -80,7 +95,7 @@ class AuthController extends Controller
                     'message' => 'email atau password salah',
                 ]);
             }
-            $token = bcrypt(time());
+            $token = bcrypt($randomString);
             return response([
                 'message' => 'berhasil login sebagai driver',
                 'data' => $driver,
@@ -100,7 +115,7 @@ class AuthController extends Controller
                     'data' => $pegawai
                 ], 400);
             }
-            $token = bcrypt(time());
+            $token = bcrypt($randomString);
             return response([
                 'message' => 'berhasil login sebagai pegawai',
                 'data' => $pegawai,

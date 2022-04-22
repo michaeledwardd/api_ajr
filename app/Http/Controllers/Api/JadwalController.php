@@ -52,7 +52,18 @@ class JadwalController extends Controller
             'jenis_shift' => 'required|numeric',
             'jam_mulai' => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai'
+        ],
+        [
+            'hari_kerja.regex' => 'Inputan tidak boleh mengandung angka atau simbol lain',
+            'jenis_shift.numeric' => 'Hanya bisa menerima angka',
         ]); //Membuat rule validasi input
+
+        if(is_null($request->hari_kerja) ||
+        is_null($request->jenis_shift) ||
+        is_null($request->jam_mulai) ||
+        is_null($request->jam_selesai)){
+            return response(['message' => 'Inputan tidak boleh kosong'], 400);
+        }
 
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input
@@ -107,7 +118,18 @@ class JadwalController extends Controller
             'jenis_shift' => 'required|numeric',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required|after:jam_mulai'
+        ],
+        [
+            'hari_kerja.regex' => 'Inputan tidak boleh mengandung angka atau simbol lain',
+            'jenis_shift.numeric' => 'Hanya bisa menerima angka',
         ]); //Membuat rule validasi input
+
+        if(is_null($request->hari_kerja) ||
+        is_null($request->jenis_shift) ||
+        is_null($request->jam_mulai) ||
+        is_null($request->jam_selesai)){
+            return response(['message' => 'Inputan tidak boleh kosong'], 400);
+        }
 
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input

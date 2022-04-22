@@ -104,7 +104,40 @@ class DriverController extends Controller
             'upload_sehat_jiwa' => 'required|max:1024|mimes:jpg,png,jpeg|image',
             'upload_sehat_jasmani' => 'required|max:1024|mimes:jpg,png,jpeg|image',
             'upload_skck' => 'required|max:1024|mimes:jpg,png,jpeg|image'
+        ],
+        [
+            'foto_driver.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg dan png',
+            'biaya_sewa_driver.numeric' => 'Hanya bisa menerima angka',
+            'email_driver.unique' => 'Email sudah pernah digunakan',
+            'no_telp.numeric' => 'Hanya bisa menerima angka',
+            'email_driver.email' => 'Kesalahan format email',
+            'tgl_lahir.date_format' => 'Format tanggal adalah YYYY MM DD',
+            'upload_sim.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg, dan png',
+            'upload_bebas_napza.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg, dan png',
+            'upload_sehat_jiwa.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg, dan png',
+            'upload_sehat_jasmani.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg, dan png',
+            'upload_skck.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg, dan png',
         ]);
+
+        if(is_null($request->nama_driver) || 
+        is_null($request->jenis_kelamin) ||
+        is_null($request->alamat) ||
+        is_null($request->email_driver) ||
+        is_null($request->foto_driver) ||
+        is_null($request->status_berkas) ||
+        is_null($request->status_tersedia) ||
+        is_null($request->is_aktif) ||
+        is_null($request->biaya_sewa_driver) ||
+        is_null($request->no_telp) ||
+        is_null($request->tgl_lahir) ||
+        is_null($request->mahir_inggris) ||
+        is_null($request->upload_sim) ||
+        is_null($request->upload_bebas_napza) ||
+        is_null($request->upload_sehat_jiwa) ||
+        is_null($request->upload_sehat_jasmani) ||
+        is_null($request->upload_skck)){
+            return response(['message' => 'Inputan tidak boleh kosong'], 400); //Return error invalid input
+        }
 
         if($validate->fails())
             return response(['message'=> $validate->errors()],400);
@@ -188,7 +221,7 @@ class DriverController extends Controller
             'nama_driver'=> 'required',
             'jenis_kelamin' => 'required|regex:/^[\pL\s\-]+$/u',
             'alamat' => 'required',
-            'email_driver' => 'required|email:rfc,dns',
+            'email_driver' => 'required|email',
             'password' => 'required',
             'foto_driver' => 'max:1024|mimes:jpg,png,jpeg|image',
             'status_tersedia' => 'required|regex:/^[\pL\s\-]+$/u',
@@ -204,8 +237,39 @@ class DriverController extends Controller
             'upload_sehat_jiwa' => 'max:1024|mimes:jpg,png,jpeg|image',
             'upload_sehat_jasmani' => 'max:1024|mimes:jpg,png,jpeg|image',
             'upload_skck' => 'max:1024|mimes:jpg,png,jpeg|image'
-            
+        ],
+        [
+            'foto_driver.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg dan png',
+            'biaya_sewa_driver.numeric' => 'Hanya bisa menerima angka',
+            'no_telp.numeric' => 'Hanya bisa menerima angka',
+            'email_driver.email' => 'Kesalahan format email',
+            'tgl_lahir.date_format' => 'Format tanggal adalah YYYY MM DD',
+            'upload_sim.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg, dan png',
+            'upload_bebas_napza.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg, dan png',
+            'upload_sehat_jiwa.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg, dan png',
+            'upload_sehat_jasmani.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg, dan png',
+            'upload_skck.mimes' => 'Hanya bisa menerima file dalam bentuk jpg, jpeg, dan png',
         ]); //Membuat rule validasi input
+
+        if(is_null($request->nama_driver) || 
+        is_null($request->jenis_kelamin) ||
+        is_null($request->alamat) ||
+        is_null($request->email_driver) ||
+        is_null($request->foto_driver) ||
+        is_null($request->status_berkas) ||
+        is_null($request->status_tersedia) ||
+        is_null($request->is_aktif) ||
+        is_null($request->biaya_sewa_driver) ||
+        is_null($request->no_telp) ||
+        is_null($request->tgl_lahir) ||
+        is_null($request->mahir_inggris) ||
+        is_null($request->upload_sim) ||
+        is_null($request->upload_bebas_napza) ||
+        is_null($request->upload_sehat_jiwa) ||
+        is_null($request->upload_sehat_jasmani) ||
+        is_null($request->upload_skck)){
+            return response(['message' => 'Inputan tidak boleh kosong'], 400); //Return error invalid input
+        }
 
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input
