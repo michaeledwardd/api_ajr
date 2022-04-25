@@ -228,6 +228,8 @@ class MobilController extends Controller
             'nomor_stnk' => 'required|numeric'
         ]); //Membuat rule validasi input
 
+       
+
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input
         }

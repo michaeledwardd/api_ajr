@@ -80,6 +80,16 @@ class PegawaiController extends Controller
             'is_aktif' => 'required'
         ]); //Membuat rule validasi input
 
+        if(is_null($request->id_role) ||
+        is_null($request->nama_pegawai) ||
+        is_null($request->foto_pegawai) ||
+        is_null($request->tgl_lahir) ||
+        is_null($request->jenis_kelamin) ||
+        is_null($request->alamat) ||
+        is_null($request->email)){
+            return response(['message' => 'Inputan tidak boleh kosong'], 400); //Return error invalid input
+        }
+
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input
         }
@@ -151,6 +161,15 @@ class PegawaiController extends Controller
             'password',
             'is_aktif' => 'required'
         ]); //Membuat rule validasi input
+
+        if(is_null($request->id_role) ||
+        is_null($request->nama_pegawai) ||
+        is_null($request->tgl_lahir) ||
+        is_null($request->jenis_kelamin) ||
+        is_null($request->alamat) ||
+        is_null($request->email)){
+            return response(['message' => 'Inputan tidak boleh kosong'], 400); //Return error invalid input
+        }
 
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input

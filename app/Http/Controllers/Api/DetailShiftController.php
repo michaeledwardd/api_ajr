@@ -51,7 +51,7 @@ class DetailShiftController extends Controller
         ], 400); //Return message data detail shift kosong
     }
 
-    public function store(Request $request){
+    public function store(Request $request, $id_pegawai){
         $storeData = $request->all(); //Mengambil semua input dari API Client
         $validate = Validator::make($storeData, [
             'id_jadwal' => 'required|numeric',
@@ -60,6 +60,14 @@ class DetailShiftController extends Controller
 
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input
+        }
+
+        $hitungshift = DetailShift::select('id_pegawai')->where('id_pegawai',$id_pegawai)->count();
+
+        if($hitungshift == 6){
+            return response([
+                'message' => 'Shift sudah melebihi batas',
+            ], 400);
         }
 
         $DetailShift = DetailShift::create($storeData);

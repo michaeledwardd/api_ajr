@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\Transaksi;
 use App\Models\Driver;
+use App\Models\Mobil;
+use App\Models\Promo;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use DateTime;
 
 class TransaksiController extends Controller
 {
@@ -88,7 +91,7 @@ class TransaksiController extends Controller
             'total_biaya_pinjam' => 'numeric',
             'biaya_denda' => 'numeric',
             'total_sewa_driver' => 'numeric',
-            'bukti_bayar' => 'max:1024|mimes:jpg,png,jpeg|image',
+            'bukti_bayar' => 'required|max:1024|mimes:jpg,png,jpeg|image',
             'subtotal_all' => 'numeric',
         ]); //Membuat rule validasi input
 
@@ -101,6 +104,58 @@ class TransaksiController extends Controller
         $datenow = Carbon::now()->format('dmy');
         $buktiBayar = $request->bukti_bayar->store('img_bukti_bayar',['disk'=>'public']);
 
+        $awal = new DateTime($request->tgl_pinjam);
+        $akhir = new DateTime($request->tgl_kembali);
+        $diffdays = $awal->diff($akhir);
+        
+        if($diffdays->m >= 1){
+            $interval = ($diffdays->m) * 30 + $diffdays->d;
+        }
+        else if($diffdays->y >= 1){
+            $interval = ($diffdays->y * 365) + ($diffdays->m * 30) + $diffdays->d ;
+        }
+        else{
+            $interval = $diffdays->d;
+        }
+
+        $sewa = mobil::where('id_mobil', $request->id_mobil)->first();
+        $harga = $sewa->biaya_sewa;
+        
+        //pakai promo dan driver
+        if(($request->id_promo) !== NULL && ($request->id_driver) !== NULL){
+            $potonganharga = promo::where('id_promo', $request->id_promo)->first();
+            $usedriver = driver::where('id_driver',$request->id_driver)->first();
+            $biayahariandriver = $usedriver->biaya_sewa_driver;
+            $diskon = $potonganharga->jumlah_potongan;
+            $totalsewapinjam = $harga * $interval;
+            $totalsewadriver = $biayahariandriver * $interval;
+            $grandtotal = $totalsewapinjam + $totalsewadriver;
+            $totalall = $grandtotal - ($grandtotal * ($diskon/100)); 
+
+        }
+        //tidak pakai promo dan tidak pakai driver
+        else if(($request->id_promo) === NULL && ($request->id_driver) === NULL){
+            $totalsewadriver = 0;
+            $totalsewapinjam = $harga * $interval;
+            $totalall = $totalsewapinjam;
+        }
+        //pakai promo dan tidak pakai driver
+        else if(($request->id_promo) !== NULL && ($request->id_driver) === NULL){
+            $totalsewadriver = 0;
+            $potonganharga = promo::where('id_promo', $request->id_promo)->first();
+            $diskon = $potonganharga->jumlah_potongan;
+            $totalsewapinjam = $harga * $interval;
+            $totalall = $totalsewapinjam - ($totalsewapinjam * ($diskon/100)); 
+        }
+        //tidak pakai promo dan pakai driver
+        else if(($request->id_promo) === NULL && ($request->id_driver) !== NULL){
+            $usedriver = driver::where('id_driver',$request->id_driver)->first();
+            $biayahariandriver = $usedriver->biaya_sewa_driver;
+            $totalsewapinjam = $harga * $interval;
+            $totalsewadriver = $biayahariandriver * $interval;
+            $totalall = $totalsewapinjam + $totalsewadriver;
+        }
+        
         if(($request->id_driver)===NULL)
         {
             $kode_pinjam = sprintf("02");
@@ -125,11 +180,11 @@ class TransaksiController extends Controller
             'jenis_peminjaman'=>$request->jenis_peminjaman,
             // 'cek_terlambat'=>$request->cek_terlambat,
             // 'total_denda'=>$request->total_denda,
-            // 'total_biaya_pinjam'=>$request->total_biaya_pinjam,
+            'total_biaya_pinjam'=>$totalsewapinjam,
             // 'biaya_denda'=>$request->biaya_denda,
-            // 'total_sewa_driver'=>$request->total_sewa_driver,
+            'total_sewa_driver'=>$totalsewadriver,
             'bukti_bayar'=>$buktiBayar,
-            // 'subtotal_all'=>$request->subtotal_all,
+            'subtotal_all'=>$totalall,
             // 'status_transaksi'=>$request->status_transaksi,
             // 'metode_bayar'=>$request->metode_bayar,
             // 'rating_perform_driver'=>$request->rating_perform_driver,
@@ -209,6 +264,56 @@ class TransaksiController extends Controller
         $hasilrerata = array_column($hitungrerata, 'reratabaru');
         DB::update("UPDATE driver SET rerata_rating = '$hasilrerata[0]' WHERE id_driver = '$id_driver' ");
 
+        $awal = new DateTime($request->tgl_pinjam);
+        $akhir = new DateTime($request->tgl_kembali);
+        $diffdays = $awal->diff($akhir);
+        
+        if($diffdays->m >= 1){
+            $interval = ($diffdays->m) * 30 + $diffdays->d;
+        }
+        else if($diffdays->y >= 1){
+            $interval = ($diffdays->y * 365) + ($diffdays->m * 30) + $diffdays->d ;
+        }
+        else{
+            $interval = $diffdays->d;
+        }
+
+        $sewa = mobil::where('id_mobil', $request->id_mobil)->first();
+        $harga = $sewa->biaya_sewa;
+
+        if(($request->id_promo) !== NULL && ($request->id_driver) !== NULL){
+            $potonganharga = promo::where('id_promo', $request->id_promo)->first();
+            $usedriver = driver::where('id_driver',$request->id_driver)->first();
+            $biayahariandriver = $usedriver->biaya_sewa_driver;
+            $diskon = $potonganharga->jumlah_potongan;
+            $totalsewapinjam = $harga * $interval;
+            $totalsewadriver = $biayahariandriver * $interval;
+            $grandtotal = $totalsewapinjam + $totalsewadriver;
+            $totalall = $grandtotal - ($grandtotal * ($diskon/100)); 
+        }
+        //tidak pakai promo dan tidak pakai driver
+        else if(($request->id_promo) === NULL && ($request->id_driver) === NULL){
+            $totalsewadriver = 0;
+            $totalsewapinjam = $harga * $interval;
+            $totalall = $totalsewapinjam;
+        }
+        //pakai promo dan tidak pakai driver
+        else if(($request->id_promo) !== NULL && ($request->id_driver) === NULL){
+            $totalsewadriver = 0;
+            $potonganharga = promo::where('id_promo', $request->id_promo)->first();
+            $diskon = $potonganharga->jumlah_potongan;
+            $totalsewapinjam = $harga * $interval;
+            $totalall = $totalsewapinjam - ($totalsewapinjam * ($diskon/100)); 
+        }
+        //tidak pakai promo dan pakai driver
+        else if(($request->id_promo) === NULL && ($request->id_driver) !== NULL){
+            $usedriver = driver::where('id_driver',$request->id_driver)->first();
+            $biayahariandriver = $usedriver->biaya_sewa_driver;
+            $totalsewapinjam = $harga * $interval;
+            $totalsewadriver = $biayahariandriver * $interval;
+            $totalall = $totalsewapinjam + $totalsewadriver;
+        }
+
         $Transaksi->id_customer = $updateData['id_customer']; 
         $Transaksi->id_mobil = $updateData['id_mobil']; 
         $Transaksi->id_pegawai = $updateData['id_pegawai'];
@@ -230,6 +335,9 @@ class TransaksiController extends Controller
         $Transaksi->tgl_kembali = $updateData['tgl_kembali'];
         $Transaksi->tgl_selesai_pinjam = $updateData['tgl_selesai_pinjam']; 
         $Transaksi->jenis_peminjaman = $updateData['jenis_peminjaman'];
+        $Transaksi->total_biaya_pinjam = $totalsewapinjam;
+        $Transaksi->total_sewa_driver = $totalsewadriver;
+        $Transaksi->subtotal_all = $totalall;
 
         if($Transaksi->save()){
             return response([
@@ -346,26 +454,5 @@ class TransaksiController extends Controller
             'message' => 'Empty',
             'data' => null
         ], 400); //Return message data Transaksi kosong
-    }
-
-    public function hitungBiayaDriver($id_driver, $id_transaksi){
-        $biayadriver = DB::select("SELECT biaya_sewa_driver FROM driver where id_driver = '$id_driver'");
-        $selisihHari = DB::select("SELECT tgl_pinjam, tgl_kembali, datediff(tgl_kembali, tgl_pinjam) 
-        as selisih from transaksi where id_driver = '$id_driver' and id_transaksi = '$id_transaksi'");
-        
-        $tempselisih = array_column($selisihHari, 'selisih');
-        $tempbiayadriver = array_column($biayadriver, 'biaya_sewa_driver');
-        $hitungbiayadriver = $tempselisih[0] * $tempbiayadriver[0];
-
-        return $hitungbiayadriver;
-    }
-
-    public function hitungTerlambat($id_transaksi){
-        $selisihHari = DB::select("SELECT tgl_kembali, tgl_selesai_pinjam, datediff(tgl_selesai_pinjam, tgl_kembali)
-        as selisih from transaksi where id_transaksi ='$id_transaksi'");
-
-        $tempselisih = array_column($selisihHari, 'selisih');
-
-        return $selisihHari;
     }
 }

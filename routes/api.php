@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
     Route::delete('role/{id_role}', 'Api\RoleController@destroy');
 
     Route::get('detailshift', 'Api\DetailShiftController@index');
-    Route::post('detailshift', 'Api\DetailShiftController@store');
+    Route::post('detailshift/{id_pegawai}', 'Api\DetailShiftController@store');
     Route::get('detailshift/{id_detail_shift}', 'Api\DetailShiftController@show');
     Route::put('detailshift/{id_detail_shift}', 'Api\DetailShiftController@update');
     Route::delete('detailshift/{id_detail_shift}', 'Api\DetailShiftController@destroy');

@@ -75,20 +75,6 @@ class CustomerController extends Controller
             'usia_customer.numeric' => 'Hanya bisa menerima angka'
         ]); //Membuat rule validasi input
 
-        if(is_null($request->nama_customer) ||
-        is_null($request->alamat_customer) ||
-        is_null($request->tgl_lahir) ||
-        is_null($request->jenis_kelamin) ||
-        is_null($request->email_customer) ||
-        is_null($request->no_telp) ||
-        is_null($request->upload_berkas) ||
-        is_null($request->nomor_kartupengenal) ||
-        is_null($request->asal_customer) ||
-        is_null($request->usia_customer) ||
-        is_null($request->no_sim)){
-            return response(['message' => 'Inputan tidak boleh kosong'], 400);
-        }
-
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input
         }
@@ -187,19 +173,6 @@ class CustomerController extends Controller
             'usia_customer.numeric' => 'Hanya bisa menerima angka'
         ]); //Membuat rule validasi input
 
-        if(is_null($request->nama_customer) ||
-        is_null($request->alamat_customer) ||
-        is_null($request->tgl_lahir) ||
-        is_null($request->jenis_kelamin) ||
-        is_null($request->email_customer) ||
-        is_null($request->no_telp) ||
-        is_null($request->upload_berkas) ||
-        is_null($request->nomor_kartupengenal) ||
-        is_null($request->asal_customer) ||
-        is_null($request->usia_customer) ||
-        is_null($request->no_sim)){
-            return response(['message' => 'Inputan tidak boleh kosong'], 400);
-        }
 
         if($validate->fails()){
             return response(['message' => $validate->errors()], 400); //Return error invalid input
