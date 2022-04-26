@@ -79,6 +79,7 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('transaksi', 'Api\TransaksiController@index');
     Route::get('transaksiall', 'Api\TransaksiController@showdataAll');
+    Route::get('riwayattransaksi/{id_customer}', 'Api\TransaksiController@showdataAllbyUser');
     Route::post('transaksi', 'Api\TransaksiController@store');
     Route::get('transaksi/{id_transaksi}', 'Api\TransaksiController@show');
     Route::post('transaksi/{id_transaksi}', 'Api\TransaksiController@update');

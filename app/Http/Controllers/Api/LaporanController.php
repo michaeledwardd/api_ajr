@@ -50,4 +50,8 @@ class LaporanController extends Controller
             'data' => null
         ], 400); //Return message data Transaksi kosong
     }
+
+    public function cetakNotaTransaksi($id_transaksi){
+        
+    }
 }
