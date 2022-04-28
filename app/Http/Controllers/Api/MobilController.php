@@ -135,11 +135,9 @@ class MobilController extends Controller
 
         if(($request->id_mitra)===NULL){
             $request->kategori_aset = sprintf("perusahaan");
-            $request->status_ketersediaan = sprintf("tidak tersedia");
         }
         else{
             $request->kategori_aset = sprintf("mitra");
-            $request->status_ketersediaan = sprintf("tersedia");
         }
         
         $fotoMobil = $request->foto_mobil->store('img_mobil',['disk'=>'public']);

@@ -52,6 +52,29 @@ class LaporanController extends Controller
     }
 
     public function cetakNotaTransaksi($id_transaksi){
-        
+        $data = DB::table('transaksi')
+        ->select('transaksi.id_transaksi','transaksi.created_at','customer.nama_customer','pegawai.nama_pegawai','driver.nama_driver','driver.biaya_sewa_driver','mobil.biaya_sewa','promo.kode_promo','transaksi.tgl_pinjam','transaksi.tgl_kembali','transaksi.tgl_selesai_pinjam','mobil.nama_mobil','transaksi.total_denda','transaksi.subtotal_all','transaksi.jumlah_diskon','transaksi.total_biaya_pinjam','transaksi.total_sewa_driver')
+        ->leftjoin('promo', 'transaksi.id_promo', '=', 'promo.id_promo')
+        ->leftjoin('driver', 'transaksi.id_driver', '=' ,'driver.id_driver')
+        ->leftjoin('customer', 'transaksi.id_customer', '=', 'customer.id_customer')
+        ->leftjoin('pegawai', 'transaksi.id_pegawai', '=', 'pegawai.id_pegawai')
+        ->leftjoin('mobil', 'transaksi.id_mobil', '=', 'mobil.id_mobil')
+        ->where('id_transaksi','=',$id_transaksi)->get();
+
+        $pdf = PDF::loadview('nota_pdf',['data'=>$data]);
+
+        return $pdf->stream();
+
+        if(count($data) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $data
+            ], 200);
+        } //Return data semua Transaksi dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 404); //Return message data Transaksi kosong
     }
 }

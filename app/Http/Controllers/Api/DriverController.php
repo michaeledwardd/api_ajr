@@ -255,19 +255,13 @@ class DriverController extends Controller
         is_null($request->jenis_kelamin) ||
         is_null($request->alamat) ||
         is_null($request->email_driver) ||
-        is_null($request->foto_driver) ||
         is_null($request->status_berkas) ||
         is_null($request->status_tersedia) ||
         is_null($request->is_aktif) ||
         is_null($request->biaya_sewa_driver) ||
         is_null($request->no_telp) ||
         is_null($request->tgl_lahir) ||
-        is_null($request->mahir_inggris) ||
-        is_null($request->upload_sim) ||
-        is_null($request->upload_bebas_napza) ||
-        is_null($request->upload_sehat_jiwa) ||
-        is_null($request->upload_sehat_jasmani) ||
-        is_null($request->upload_skck)){
+        is_null($request->mahir_inggris)){
             return response(['message' => 'Inputan tidak boleh kosong'], 400); //Return error invalid input
         }
 

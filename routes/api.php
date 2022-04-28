@@ -94,6 +94,7 @@ use Illuminate\Support\Facades\Route;
     //laporan
     Route::get('cetakLaporanPendapatanMobil', 'Api\LaporanController@LaporanPendapatanMobil');
     Route::get('cetakLaporanTopDriver', 'Api\LaporanController@LaporantopDriver');
+    Route::get('printnota/{id_transaksi}', 'Api\LaporanController@cetakNotaTransaksi');
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
     

@@ -190,6 +190,7 @@ class TransaksiController extends Controller
             $totalsewapinjam = $harga * $interval;
             $totalsewadriver = $biayahariandriver * $interval;
             $grandtotal = $totalsewapinjam + $totalsewadriver;
+            $jumlahdiskon = $grandtotal * ($diskon/100);
             $totalall = $grandtotal - ($grandtotal * ($diskon/100)) + $bayardenda; 
             
         }
@@ -197,6 +198,7 @@ class TransaksiController extends Controller
         else if(($request->id_promo) === NULL && ($request->id_driver) === NULL){
             $totalsewadriver = 0;
             $totalsewapinjam = $harga * $interval;
+            $jumlahdiskon = 0;
             $totalall = $totalsewapinjam + $bayardenda;
         }
         //pakai promo dan tidak pakai driver
@@ -205,6 +207,7 @@ class TransaksiController extends Controller
             $potonganharga = promo::where('id_promo', $request->id_promo)->first();
             $diskon = $potonganharga->jumlah_potongan;
             $totalsewapinjam = $harga * $interval;
+            $jumlahdiskon = $totalsewapinjam * ($diskon/100);
             $totalall = $totalsewapinjam - ($totalsewapinjam * ($diskon/100)) + $bayardenda; 
         }
         //tidak pakai promo dan pakai driver
@@ -213,6 +216,7 @@ class TransaksiController extends Controller
             $biayahariandriver = $usedriver->biaya_sewa_driver;
             $totalsewapinjam = $harga * $interval;
             $totalsewadriver = $biayahariandriver * $interval;
+            $jumlahdiskon = 0;
             $totalall = $totalsewapinjam + $totalsewadriver + $bayardenda;
         }
         
@@ -238,13 +242,14 @@ class TransaksiController extends Controller
             'tgl_selesai_pinjam'=>$request->tgl_selesai_pinjam,
             'waktu_selesai_pinjam'=>$request->waktu_selesai_pinjam,
             'jenis_peminjaman'=>$request->jenis_peminjaman,
-            'cek_terlambat'=>$request->cek_terlambat,
+            'jumlah_diskon'=>$jumlahdiskon,
             'total_denda'=>$bayardenda,
             'total_biaya_pinjam'=>$totalsewapinjam,
             'biaya_denda'=>$biayadenda,
             'total_sewa_driver'=>$totalsewadriver,
             'bukti_bayar'=>$buktiBayar,
             'subtotal_all'=>$totalall,
+            'status_transaksi'=>sprintf("belum verifikasi"),
         ]);
 
         return response([
@@ -298,7 +303,6 @@ class TransaksiController extends Controller
             'tgl_transaksi' => 'required|date_format:Y-m-d',
             'tgl_pinjam' => 'required|date_format:Y-m-d',
             'tgl_kembali' => 'required|date_format:Y-m-d|after:tgl_pinjam',
-            'tgl_selesai_pinjam' => 'required|date_format:Y-m-d|after:tgl_pinjam',
             'jenis_peminjaman',
             'cek_terlambat',
             'total_denda' => 'numeric',
@@ -383,6 +387,7 @@ class TransaksiController extends Controller
             $totalsewapinjam = $harga * $interval;
             $totalsewadriver = $biayahariandriver * $interval;
             $grandtotal = $totalsewapinjam + $totalsewadriver;
+            $jumlahdiskon = $grandtotal * ($diskon/100);
             $totalall = $grandtotal - ($grandtotal * ($diskon/100)) + $bayardenda; 
             
         }
@@ -390,6 +395,7 @@ class TransaksiController extends Controller
         else if(($request->id_promo) === NULL && ($request->id_driver) === NULL){
             $totalsewadriver = 0;
             $totalsewapinjam = $harga * $interval;
+            $jumlahdiskon = 0;
             $totalall = $totalsewapinjam + $bayardenda;
         }
         //pakai promo dan tidak pakai driver
@@ -398,6 +404,7 @@ class TransaksiController extends Controller
             $potonganharga = promo::where('id_promo', $request->id_promo)->first();
             $diskon = $potonganharga->jumlah_potongan;
             $totalsewapinjam = $harga * $interval;
+            $jumlahdiskon = $totalsewapinjam * ($diskon/100);
             $totalall = $totalsewapinjam - ($totalsewapinjam * ($diskon/100)) + $bayardenda; 
         }
         //tidak pakai promo dan pakai driver
@@ -406,6 +413,7 @@ class TransaksiController extends Controller
             $biayahariandriver = $usedriver->biaya_sewa_driver;
             $totalsewapinjam = $harga * $interval;
             $totalsewadriver = $biayahariandriver * $interval;
+            $jumlahdiskon = 0;
             $totalall = $totalsewapinjam + $totalsewadriver + $bayardenda;
         }
 
@@ -433,11 +441,14 @@ class TransaksiController extends Controller
         $Transaksi->total_biaya_pinjam = $totalsewapinjam;
         $Transaksi->total_sewa_driver = $totalsewadriver;
         $Transaksi->subtotal_all = $totalall;
-        $Transaksi->cek_terlambat = $cekterlambat;
+        $Transaksi->jumlah_diskon = $jumlahdiskon;
         $Transaksi->total_denda = $bayardenda;
         $Transaksi->biaya_denda = $biayadenda;
-        $Transaksi->waktu_selesai_pinjam = $updateData['waktu_selesai_pinjam']; 
-        $Transaksi->waktu_kembali = $updateData['waktu_kembali']; 
+        $Transaksi->waktu_kembali = $updateData['waktu_kembali'];
+        if(isset($request->bukti_bayar)){
+            $buktiBayar = $request->bukti_bayar->store('img_bukti_bayar',['disk'=>'public']);
+            $Transaksi->bukti_bayar = $buktiBayar;
+        }
 
         if($Transaksi->save()){
             return response([
@@ -505,6 +516,7 @@ class TransaksiController extends Controller
 
         $updateData = $request->all();
         $validate = Validator::make($updateData, [
+            'id_promo',
             'cek_terlambat',
             'total_denda' => 'numeric',
             'total_biaya_pinjam' => 'numeric',
@@ -514,6 +526,8 @@ class TransaksiController extends Controller
             'subtotal_all' => 'numeric',
             'status_transaksi' => 'required|regex:/^[\pL\s\-]+$/u',
             'metode_bayar' => 'regex:/^[\pL\s\-]+$/u',
+            'tgl_selesai_pinjam' => 'required|date_format:Y-m-d|after:tgl_pinjam',
+            'waktu_selesai_pinjam' => 'required'
         ]); //Membuat rule validasi input
 
         if($validate->fails()){
@@ -524,8 +538,11 @@ class TransaksiController extends Controller
             $buktiBayar = $request->bukti_bayar->store('img_bukti_bayar',['disk'=>'public']);
             $Transaksi->bukti_bayar = $buktiBayar;
         }
+        $Transaksi->id_promo = $updateData['id_promo'];
         $Transaksi->status_transaksi = $updateData['status_transaksi']; 
         $Transaksi->metode_bayar = $updateData['metode_bayar'];
+        $Transaksi->tgl_selesai_pinjam = $updateData['tgl_selesai_pinjam']; 
+        $Transaksi->waktu_selesai_pinjam = $updateData['waktu_selesai_pinjam'];
 
         if($Transaksi->save()){
             return response([
