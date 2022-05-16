@@ -239,8 +239,8 @@ class TransaksiController extends Controller
             'tgl_pinjam'=>$request->tgl_pinjam,
             'tgl_kembali'=>$request->tgl_kembali,
             'waktu_kembali'=>$request->waktu_kembali,
-            'tgl_selesai_pinjam'=>$request->tgl_selesai_pinjam,
-            'waktu_selesai_pinjam'=>$request->waktu_selesai_pinjam,
+            'tgl_selesai_pinjam'=>sprintf("null"),
+            'waktu_selesai_pinjam'=>sprintf("00:00:00"),
             'jenis_peminjaman'=>$request->jenis_peminjaman,
             'jumlah_diskon'=>$jumlahdiskon,
             'total_denda'=>$bayardenda,
@@ -437,6 +437,7 @@ class TransaksiController extends Controller
         $Transaksi->tgl_pinjam = $updateData['tgl_pinjam']; 
         $Transaksi->tgl_kembali = $updateData['tgl_kembali'];
         $Transaksi->tgl_selesai_pinjam = $updateData['tgl_selesai_pinjam']; 
+        $Transaksi->waktu_selesai_pinjam = $updateData['waktu_selesai_pinjam'];
         $Transaksi->jenis_peminjaman = $updateData['jenis_peminjaman'];
         $Transaksi->status_transaksi = $updateData['status_transaksi'];
         $Transaksi->total_biaya_pinjam = $totalsewapinjam;
@@ -525,7 +526,7 @@ class TransaksiController extends Controller
             'total_sewa_driver'=> 'numeric',
             'bukti_bayar' => 'max:1024|mimes:jpg,png,jpeg|image',
             'subtotal_all' => 'numeric',
-            'status_transaksi' => 'required|regex:/^[\pL\s\-]+$/u',
+            
             'metode_bayar' => 'regex:/^[\pL\s\-]+$/u',
             'tgl_selesai_pinjam' => 'required|date_format:Y-m-d|after:tgl_pinjam',
             'waktu_selesai_pinjam' => 'required'
@@ -540,7 +541,7 @@ class TransaksiController extends Controller
             $Transaksi->bukti_bayar = $buktiBayar;
         }
         $Transaksi->id_promo = $updateData['id_promo'];
-        $Transaksi->status_transaksi = $updateData['status_transaksi']; 
+       
         $Transaksi->metode_bayar = $updateData['metode_bayar'];
         $Transaksi->tgl_selesai_pinjam = $updateData['tgl_selesai_pinjam']; 
         $Transaksi->waktu_selesai_pinjam = $updateData['waktu_selesai_pinjam'];
