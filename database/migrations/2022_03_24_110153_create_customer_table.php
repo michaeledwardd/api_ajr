@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('email_customer')->unique();
             $table->string('no_telp');
             $table->string('upload_berkas');
-            $table->string('status_berkas');
+            $table->string('status_berkas')->nullable();
             $table->integer('nomor_kartupengenal');
             $table->integer('no_sim')->nullable();
             $table->string('asal_customer');

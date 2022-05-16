@@ -438,6 +438,7 @@ class TransaksiController extends Controller
         $Transaksi->tgl_kembali = $updateData['tgl_kembali'];
         $Transaksi->tgl_selesai_pinjam = $updateData['tgl_selesai_pinjam']; 
         $Transaksi->jenis_peminjaman = $updateData['jenis_peminjaman'];
+        $Transaksi->status_transaksi = $updateData['status_transaksi'];
         $Transaksi->total_biaya_pinjam = $totalsewapinjam;
         $Transaksi->total_sewa_driver = $totalsewadriver;
         $Transaksi->subtotal_all = $totalall;

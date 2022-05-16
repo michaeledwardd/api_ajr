@@ -85,7 +85,7 @@ class AuthController extends Controller
         }
         else if(Driver::where('email_driver','=',$loginData['email'])->first())
         {
-            $loginDriver = Driver::where('email_driver','=',$loginData['email'])->get();
+            $loginDriver = Driver::where('email_driver','=',$loginData['email'])->first();
 
             if(Hash::check($loginData['password'], $loginDriver['password'])){
                 $driver = Driver::where('email_driver',$loginData['email'])->first();
@@ -100,7 +100,7 @@ class AuthController extends Controller
                 'message' => 'berhasil login sebagai driver',
                 'data' => $driver,
                 'token' => $token
-            ], 400);
+            ]);
         }
         else if(Pegawai::where('email','=',$loginData['email'])->first())
         {
