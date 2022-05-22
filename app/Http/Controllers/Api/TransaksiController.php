@@ -79,6 +79,30 @@ class TransaksiController extends Controller
         ], 400); //Return message data Transaksi kosong
     }
 
+    public function showdataAllbyDriver($id_driver){
+        $transaksis = DB::table('transaksi')
+        ->select('id_transaksi','promo.id_promo','driver.id_driver','pegawai.id_pegawai','mobil.id_mobil','customer.id_customer','transaksi.*','jenis_promo','jumlah_potongan','nama_customer','biaya_sewa_driver','nama_customer','nama_pegawai','nama_mobil')
+        ->leftjoin('promo', 'transaksi.id_promo', '=', 'promo.id_promo')
+        ->leftjoin('driver', 'transaksi.id_driver', '=' ,'driver.id_driver')
+        ->leftjoin('customer', 'transaksi.id_customer', '=', 'customer.id_customer')
+        ->leftjoin('pegawai', 'transaksi.id_pegawai', '=', 'pegawai.id_pegawai')
+        ->leftjoin('mobil', 'transaksi.id_mobil', '=', 'mobil.id_mobil')
+        ->where('driver.id_driver','=',$id_driver)
+        ->orderBy('created_at','asc')->get(); //Mengambil semua data Transaksi
+
+        if(count($transaksis) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $transaksis
+            ], 200);
+        } //Return data semua Transaksi dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Transaksi kosong
+    }
+
     //Method untuk menampilkan 1 data Transaksi (SEARCH)
     public function show($id_transaksi){
         $transaksis = Transaksi::find($id_transaksi); //Mencari data Transaksi berdasarkan id
@@ -541,7 +565,6 @@ class TransaksiController extends Controller
             $Transaksi->bukti_bayar = $buktiBayar;
         }
         $Transaksi->id_promo = $updateData['id_promo'];
-       
         $Transaksi->metode_bayar = $updateData['metode_bayar'];
         $Transaksi->tgl_selesai_pinjam = $updateData['tgl_selesai_pinjam']; 
         $Transaksi->waktu_selesai_pinjam = $updateData['waktu_selesai_pinjam'];

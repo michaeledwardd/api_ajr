@@ -80,6 +80,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('transaksi', 'Api\TransaksiController@index');
     Route::get('transaksiall', 'Api\TransaksiController@showdataAll');
     Route::get('riwayattransaksi/{id_customer}', 'Api\TransaksiController@showdataAllbyUser');
+    Route::get('riwayattransaksidrv/{id_driver}', 'Api\TransaksiController@showdataAllbyDriver');
     Route::post('transaksi', 'Api\TransaksiController@store');
     Route::get('transaksi/{id_transaksi}', 'Api\TransaksiController@show');
     Route::post('transaksi/{id_transaksi}', 'Api\TransaksiController@update');
@@ -92,7 +93,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('hitungterlambat/{id_transaksi}', 'Api\TransaksiController@hitungTerlambat');
 
     //laporan
-    Route::get('cetakLaporanPendapatanMobil', 'Api\LaporanController@LaporanPendapatanMobil');
+    Route::get('cetakLaporanPenyewaanMobil', 'Api\LaporanController@LaporanPenyewaanMobil');
     Route::get('cetakLaporanTopDriver', 'Api\LaporanController@LaporantopDriver');
     Route::get('printnota/{id_transaksi}', 'Api\LaporanController@cetakNotaTransaksi');
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
