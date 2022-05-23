@@ -30,6 +30,7 @@ return new class extends Migration
             $table->boolean('cek_terlambat')->nullable();
             $table->double('total_denda')->nullable();
             $table->double('total_biaya_pinjam');
+            $table->int('jumlah_diskon');
             $table->double('biaya_denda')->nullable();
             $table->double('total_sewa_driver')->nullable();
             $table->string('bukti_bayar')->nullable();

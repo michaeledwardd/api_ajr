@@ -9,15 +9,10 @@ use PDF;
 
 class LaporanController extends Controller
 {
-    public function LaporanPenyewaanMobil()
+    //query uts nomor 6
+    public function LaporanPenyewaanMobil($tanggalawal, $tanggalakhir)
     {
-        // $laporan = $request->all();
-        // $validate = Validator::make($laporan, [
-        //     'bulan' => 'required|email',
-        //     'tahun' => 'required'
-        // ],
-
-        $data = DB::select("SELECT tipe_mobil, nama_mobil, COUNT(id_mobil) as jumlah_peminjaman, SUM(subtotal_all) AS pendapatan FROM mobil JOIN transaksi USING(id_mobil) WHERE tgl_transaksi BETWEEN '2022-03-01' AND '2022-03-31' GROUP BY id_mobil ORDER BY pendapatan DESC");
+        $data = DB::select("SELECT tipe_mobil, nama_mobil, COUNT(id_mobil) as jumlah_peminjaman, SUM(subtotal_all) AS pendapatan FROM mobil JOIN transaksi USING(id_mobil) WHERE tgl_transaksi BETWEEN '$tanggalawal' AND '$tanggalakhir'  GROUP BY id_mobil ORDER BY pendapatan DESC");
 
         if(count($data) > 0){
             return response([
@@ -32,11 +27,63 @@ class LaporanController extends Controller
         ], 400); //Return message data Transaksi kosong
     }
 
-    
+    //query uts nomor 7
+    public function LaporanDetailPendapatan($tanggalawal, $tanggalakhir){
+        $data = DB::select("SELECT nama_customer, nama_mobil, (case when id_driver is null then 'mobil' else 'mobil + driver' end) as 'jenis transaksi', count(id_mobil) as jumlah_peminjaman, sum(subtotal_all) as pendapatan from customer join transaksi using(id_customer) join mobil using(id_mobil) where tgl_transaksi between '$tanggalawal' and '$tanggalakhir' group by id_mobil order by pendapatan desc");
 
-    public function LaporantopDriver()
+        if(count($data) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $data
+            ], 200);
+        } //Return data semua Transaksi dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Transaksi kosong
+    }
+
+    //query uts nomor 8
+    public function LaporantopDriver($tanggalawal, $tanggalakhir)
     {
-        $data = DB::select("SELECT id_driver, nama_driver, COUNT(id_driver) AS jumlah_transaksi FROM driver JOIN transaksi USING(id_driver) WHERE tgl_transaksi BETWEEN '2022-03-01' AND '2022-03-31' GROUP BY (id_driver) ORDER BY (jumlah_transaksi) DESC LIMIT 5");
+        $data = DB::select("SELECT id_driver, nama_driver, COUNT(id_driver) AS jumlah_transaksi FROM driver JOIN transaksi USING(id_driver) WHERE tgl_transaksi BETWEEN '$tanggalawal' AND '$tanggalakhir' GROUP BY (id_driver) ORDER BY (jumlah_transaksi) DESC LIMIT 5");
+
+        if(count($data) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $data
+            ], 200);
+        } //Return data semua Transaksi dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Transaksi kosong
+    }
+
+    //query uts nomor 9
+    public function TopDriverbyRating($tanggalawal, $tanggalakhir){
+        $data = DB::select("SELECT id_driver, nama_driver, count(id_driver) as jumlah_transaksi, (sum(rating_perform_driver)/count(id_driver)) as rerata_rating_drv from driver join transaksi using(id_driver) where tgl_transaksi between '$tanggalawal' and '$tanggalakhir' group by(id_driver)
+        order by(jumlah_transaksi) desc limit 5");
+
+        if(count($data) > 0){
+            return response([
+                'message' => 'Retrieve All Success',
+                'data' => $data
+            ], 200);
+        } //Return data semua Transaksi dalam bentuk JSON
+
+        return response([
+            'message' => 'Empty',
+            'data' => null
+        ], 400); //Return message data Transaksi kosong
+    }
+
+    //query uts nomor 10
+    public function LaporanTopCustomer($tanggalawal, $tanggalakhir){
+        $data = DB::select("SELECT nama_customer, count(id_customer) as jumlah_transaksi 
+        from transaksi join customer using(id_customer) where tgl_transaksi between '$tanggalawal' and '$tanggalakhir' group by (id_customer) order by (jumlah_transaksi) desc limit 5");
 
         if(count($data) > 0){
             return response([

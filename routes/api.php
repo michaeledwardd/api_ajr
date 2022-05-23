@@ -93,8 +93,13 @@ use Illuminate\Support\Facades\Route;
     Route::get('hitungterlambat/{id_transaksi}', 'Api\TransaksiController@hitungTerlambat');
 
     //laporan
-    Route::get('cetakLaporanPenyewaanMobil', 'Api\LaporanController@LaporanPenyewaanMobil');
-    Route::get('cetakLaporanTopDriver', 'Api\LaporanController@LaporantopDriver');
+    Route::get('cetakLaporanPenyewaanMobil/{tanggalawal}/{tanggalakhir}', 'Api\LaporanController@LaporanPenyewaanMobil');
+    Route::get('cetakLaporanTopDriver/{tanggalawal}/{tanggalakhir}', 'Api\LaporanController@LaporantopDriver');
+    Route::get('cetakLaporanDetailPendapatan/{tanggalawal}/{tanggalakhir}', 'Api\LaporanController@LaporanDetailPendapatan');
+    Route::get('cetakTopDriverbyRating/{tanggalawal}/{tanggalakhir}', 'Api\LaporanController@TopDriverbyRating');
+    Route::get('cetakLaporanTopCustomer/{tanggalawal}/{tanggalakhir}', 'Api\LaporanController@LaporanTopCustomer');
+
+
     Route::get('printnota/{id_transaksi}', 'Api\LaporanController@cetakNotaTransaksi');
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
