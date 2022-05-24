@@ -29,7 +29,7 @@ class LaporanController extends Controller
 
     //query uts nomor 7
     public function LaporanDetailPendapatan($tanggalawal, $tanggalakhir){
-        $data = DB::select("SELECT nama_customer, nama_mobil, (case when id_driver is null then 'mobil' else 'mobil + driver' end) as 'jenis transaksi', count(id_mobil) as jumlah_peminjaman, sum(subtotal_all) as pendapatan from customer join transaksi using(id_customer) join mobil using(id_mobil) where tgl_transaksi between '$tanggalawal' and '$tanggalakhir' group by id_mobil order by pendapatan desc");
+        $data = DB::select("SELECT nama_customer, nama_mobil, (case when id_driver is null then 'mobil' else 'mobil + driver' end) as 'jenis_transaksi', count(id_mobil) as jumlah_peminjaman, sum(subtotal_all) as pendapatan from customer join transaksi using(id_customer) join mobil using(id_mobil) where tgl_transaksi between '$tanggalawal' and '$tanggalakhir' group by id_mobil order by pendapatan desc");
 
         if(count($data) > 0){
             return response([
