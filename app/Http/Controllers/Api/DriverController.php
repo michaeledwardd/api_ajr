@@ -325,4 +325,85 @@ class DriverController extends Controller
             'data' => null
         ], 400);
     }
+
+    public function updateStatusKetersediaan(Request $request, $id_driver){
+        $Driver = Driver::find($id_driver); //Mencari data Driver berdasarkan id
+
+        if(is_null($Driver)){
+            return response([
+                'message' => 'Driver Not Found',
+                'data' => null
+            ], 404);
+        } //Return message saat data Driver tidak ditemukan
+
+        $updateData = $request->all();
+        $validate = Validator::make($updateData, [
+            'status_tersedia' => 'required|regex:/^[\pL\s\-]+$/u',
+        ]);
+        
+        if($validate->fails()){
+            return response(['message' => $validate->errors()], 400); //Return error invalid input
+        }
+        
+        $Driver->status_tersedia = $updateData['status_tersedia'];
+        
+        if($Driver->save()){
+            return response([
+                'message' => 'Update Status Ketersediaan Success',
+                'data' => $Driver
+            ], 200);
+        } //Return data Driver yang telah di EDIT dalam bentuk JSON
+
+        return response([
+            'message' => 'Update Driver Failed',
+            'data' => null
+        ], 400);
+    }
+
+    public function editDriverinMobile(Request $request, $id_driver){
+        $Driver = Driver::find($id_driver); //Mencari data Driver berdasarkan id
+
+        if(is_null($Driver)){
+            return response([
+                'message' => 'Driver Not Found',
+                'data' => null
+            ], 404);
+        } //Return message saat data Driver tidak ditemukan
+
+        $updateData = $request->all();
+        $validate = Validator::make($updateData, [
+            'nama_driver'=> 'required',
+            'jenis_kelamin' => 'required|regex:/^[\pL\s\-]+$/u',
+            'alamat' => 'required',
+            'biaya_sewa_driver' => 'required|numeric',
+            'no_telp' => 'required|numeric',
+            
+        ]); //Membuat rule validasi input
+
+        
+
+        if($validate->fails()){
+            return response(['message' => $validate->errors()], 400); //Return error invalid input
+        }
+        
+        
+        $Driver->nama_driver = $updateData['nama_driver']; 
+        $Driver->jenis_kelamin = $updateData['jenis_kelamin'];
+        $Driver->alamat = $updateData['alamat'];
+        $Driver->biaya_sewa_driver = $updateData['biaya_sewa_driver'];
+        $Driver->no_telp = $updateData['no_telp'];
+        
+
+        if($Driver->save()){
+            return response([
+                'message' => 'Update Driver Success',
+                'data' => $Driver
+            ], 200);
+        } //Return data Driver yang telah di EDIT dalam bentuk JSON
+
+        return response([
+            'message' => 'Update Driver Failed',
+            'data' => null
+        ], 400);
+    }
 }

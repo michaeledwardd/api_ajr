@@ -101,6 +101,10 @@ use Illuminate\Support\Facades\Route;
 
 
     Route::get('printnota/{id_transaksi}', 'Api\LaporanController@cetakNotaTransaksi');
+
+    //ubah status driver di mobile
+    Route::put('statustersediadriver/{id_driver}', 'Api\DriverController@updateStatusKetersediaan');
+    Route::put('editdriverinmobile/{id_driver}', 'Api\DriverController@editDriverinMobile');
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
     
